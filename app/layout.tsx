@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { cormorant, jost } from './fonts'
 import './globals.css'
+import LenisProvider from '@/components/LenisProvider'
+import CustomCursor from '@/components/ui/CustomCursor'
 
 export const metadata: Metadata = {
   title: 'Vrew Kriya — Luxury Jewelry Marketing Studio',
@@ -30,7 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
       <body className="bg-bg text-cream font-sans antialiased">
-        {children}
+        <LenisProvider>
+          <CustomCursor />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   )
