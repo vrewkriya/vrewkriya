@@ -1,24 +1,26 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import Lenis from '@studio-freight/lenis'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect } from "react";
+import Lenis from "@studio-freight/lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
-export default function LenisProvider({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function LenisProvider({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   useEffect(() => {
-    const lenis = new Lenis()
+    const lenis = new Lenis();
 
-    lenis.on('scroll', ScrollTrigger.update)
-    gsap.ticker.add((time) => lenis.raf(time * 1000))
-    gsap.ticker.lagSmoothing(0)
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      lenis.destroy()
-    }
-  }, [])
+      lenis.destroy();
+    };
+  }, []);
 
-  return <>{children}</>
+  return <>{children}</>;
 }

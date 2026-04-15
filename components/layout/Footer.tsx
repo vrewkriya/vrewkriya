@@ -1,25 +1,25 @@
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   const navLinks = [
-    { label: 'Portfolio', href: '#portfolio' },
-    { label: 'Services', href: '#services' },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#contact' },
-    { label: 'Privacy', href: '#' },
-    { label: 'Terms', href: '#' },
-  ]
+    { label: "Portfolio", href: "#portfolio" },
+    { label: "Services", href: "#services" },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" },
+    { label: "Privacy", href: "#" },
+    { label: "Terms", href: "#" },
+  ];
 
   const socialLinks = [
-    { label: 'Instagram', href: 'https://instagram.com' },
-    { label: 'Behance', href: 'https://behance.net' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
-  ]
+    { label: "Instagram", href: "https://instagram.com" },
+    { label: "Behance", href: "https://behance.net" },
+    { label: "LinkedIn", href: "https://linkedin.com" },
+  ];
 
   return (
     <footer
       className="py-12 px-8 md:px-16"
-      style={{ background: 'var(--bg-3)' }}
+      style={{ background: "var(--bg-3)" }}
     >
       {/* Top row — logo + tagline (left) + nav links (right) */}
       <div className="mb-8 pb-8 border-b border-gold-dim/20">
@@ -31,7 +31,7 @@ export default function Footer() {
             </h3>
             <p
               className="font-sans font-extralight text-cream-dim"
-              style={{ fontSize: '0.8rem' }}
+              style={{ fontSize: "0.8rem" }}
             >
               Where jewelry meets light.
             </p>
@@ -56,7 +56,7 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <p
           className="font-sans font-extralight text-cream-dim text-xs"
-          style={{ fontSize: '0.7rem' }}
+          style={{ fontSize: "0.7rem" }}
         >
           © {currentYear} Vrew Kriya. All rights reserved.
         </p>
@@ -77,5 +77,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

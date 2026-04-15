@@ -1,53 +1,53 @@
-'use client'
+"use client";
 
-import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import SectionLabel from '@/components/ui/SectionLabel'
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SectionLabel from "@/components/ui/SectionLabel";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
     id: 1,
     quote:
-      'Vrew Kriya transformed how we present our jewels. Every frame tells a story. Every light makes our pieces feel precious.',
-    author: 'Priya Mehta',
-    role: 'Founder, Aurelia',
-    avatarColor: 'var(--gold)',
-    initial: 'P',
+      "Vrew Kriya transformed how we present our jewels. Every frame tells a story. Every light makes our pieces feel precious.",
+    author: "Priya Mehta",
+    role: "Founder, Aurelia",
+    avatarColor: "var(--gold)",
+    initial: "P",
   },
   {
     id: 2,
     quote:
-      'They understand luxury at a deep level. Not just beautiful images — strategic visuals that convert admirers into collectors.',
-    author: 'James Chen',
-    role: 'Creative Director, Rasa Fine',
-    avatarColor: '#8fa8c8',
-    initial: 'J',
+      "They understand luxury at a deep level. Not just beautiful images — strategic visuals that convert admirers into collectors.",
+    author: "James Chen",
+    role: "Creative Director, Rasa Fine",
+    avatarColor: "#8fa8c8",
+    initial: "J",
   },
   {
     id: 3,
     quote:
-      'Working with this team elevated our brand perception. They don\'t just document jewels—they make them unforgettable.',
-    author: 'Sofia Rossi',
-    role: 'CMO, Heirloom',
-    avatarColor: '#a87c85',
-    initial: 'S',
+      "Working with this team elevated our brand perception. They don't just document jewels—they make them unforgettable.",
+    author: "Sofia Rossi",
+    role: "CMO, Heirloom",
+    avatarColor: "#a87c85",
+    initial: "S",
   },
-]
+];
 
 export default function Testimonials() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const prefersReduced = globalThis.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches
-    if (prefersReduced) return
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      const elements = gsap.utils.toArray<Element>('.reveal-testi')
+      const elements = gsap.utils.toArray<Element>(".reveal-testi");
       elements.forEach((el) => {
         gsap.fromTo(
           el,
@@ -56,26 +56,26 @@ export default function Testimonials() {
             opacity: 1,
             y: 0,
             duration: 0.9,
-            ease: 'power2.out',
+            ease: "power2.out",
             scrollTrigger: {
               trigger: el,
-              start: 'top 88%',
-              toggleActions: 'play none none none',
+              start: "top 88%",
+              toggleActions: "play none none none",
             },
-          }
-        )
-      })
-    }, sectionRef)
+          },
+        );
+      });
+    }, sectionRef);
 
-    return () => ctx.revert()
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
       id="testimonials"
       ref={sectionRef}
       className="py-36 px-8 md:px-16"
-      style={{ background: 'var(--bg-2)' }}
+      style={{ background: "var(--bg-2)" }}
     >
       {/* Header */}
       <div className="reveal-testi mb-12">
@@ -96,7 +96,7 @@ export default function Testimonials() {
             <span
               className="font-display text-gold-dim leading-none absolute top-6 right-6"
               style={{
-                fontSize: '5.625rem',
+                fontSize: "5.625rem",
                 opacity: 0.08,
               }}
             >
@@ -107,7 +107,7 @@ export default function Testimonials() {
             <blockquote className="relative z-10 mb-10">
               <p
                 className="font-display font-light italic text-cream leading-relaxed"
-                style={{ fontSize: '1.15rem' }}
+                style={{ fontSize: "1.15rem" }}
               >
                 {testimonial.quote}
               </p>
@@ -121,7 +121,7 @@ export default function Testimonials() {
               >
                 <span
                   className="font-display font-light text-bg text-sm"
-                  style={{ fontSize: '0.85rem' }}
+                  style={{ fontSize: "0.85rem" }}
                 >
                   {testimonial.initial}
                 </span>
@@ -132,7 +132,7 @@ export default function Testimonials() {
                 </p>
                 <p
                   className="font-sans font-extralight text-cream-dim text-xs leading-tight"
-                  style={{ fontSize: '0.65rem' }}
+                  style={{ fontSize: "0.65rem" }}
                 >
                   {testimonial.role}
                 </p>
@@ -142,5 +142,5 @@ export default function Testimonials() {
         ))}
       </div>
     </section>
-  )
+  );
 }
