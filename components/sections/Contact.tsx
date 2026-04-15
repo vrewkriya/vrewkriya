@@ -8,7 +8,7 @@ import { z } from 'zod'
 const schema = z.object({
   firstName: z.string().min(2, 'First name required'),
   brand: z.string().min(2, 'Brand name required'),
-  email: z.string().email('Invalid email'),
+  email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email'),
   service: z.string().min(1, 'Please select a service'),
   message: z.string().min(10, 'Tell us more (at least 10 characters)'),
 })

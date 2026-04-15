@@ -50,16 +50,17 @@ export default function Clients() {
     >
       <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
         {clients.map((client) => (
-          <a
+          <button
             key={client}
-            href="#"
-            className="reveal-client font-display font-light uppercase transition-all duration-300"
+            type="button"
+            className="reveal-client font-display font-light uppercase transition-all duration-300 bg-transparent border-none cursor-pointer"
             style={{
               fontSize: '1.1rem',
               letterSpacing: '0.3em',
               color: 'var(--gold-dim)',
               opacity: 0.6,
               textDecoration: 'none',
+              padding: 0,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'var(--gold)'
@@ -71,7 +72,7 @@ export default function Clients() {
             }}
           >
             {client}
-          </a>
+          </button>
         ))}
       </div>
     </section>
