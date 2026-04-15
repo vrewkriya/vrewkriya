@@ -36,7 +36,7 @@ export default function Hero() {
         opacity: 0,
         ease: 'none',
         scrollTrigger: {
-          trigger: '#hero',
+          trigger: sectionRef.current,
           start: 'top top',
           end: 'bottom top',
           scrub: true,
