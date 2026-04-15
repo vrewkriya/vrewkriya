@@ -1,8 +1,8 @@
 interface SectionLabelProps {
-  children: React.ReactNode
+  readonly children: React.ReactNode
 }
 
-export default function SectionLabel({ children }: SectionLabelProps) {
+export default function SectionLabel({ children }: Readonly<SectionLabelProps>) {
   return (
     <div className="flex items-center gap-4">
       <span

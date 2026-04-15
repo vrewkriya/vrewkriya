@@ -1,14 +1,14 @@
 interface GemIllustrationProps {
-  width?: number
-  height?: number
-  className?: string
+  readonly width?: number
+  readonly height?: number
+  readonly className?: string
 }
 
 export default function GemIllustration({
   width = 520,
   height = 520,
   className,
-}: GemIllustrationProps) {
+}: Readonly<GemIllustrationProps>) {
   return (
     <svg
       width={width}

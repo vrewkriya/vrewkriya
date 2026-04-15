@@ -71,7 +71,7 @@ export default function Nav() {
           <span
             className="block h-px bg-cream transition-all duration-300"
             style={{
-              width: mobileOpen ? 24 : 24,
+              width: 24,
               transform: mobileOpen ? 'rotate(45deg) translate(3px, 3px)' : 'none',
             }}
           />

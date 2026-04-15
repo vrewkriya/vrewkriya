@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
-      <body className="bg-bg text-cream font-sans antialiased">
+      <body className="bg-bg text-cream font-sans antialiased" suppressHydrationWarning>
         <LenisProvider>
           <CustomCursor />
           {children}
