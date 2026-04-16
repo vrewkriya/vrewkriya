@@ -1,122 +1,89 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 export default function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const ringRef = useRef<HTMLDivElement>(null)
-  const pos = useRef({ x: 0, y: 0 })
-  const ringPos = useRef({ x: 0, y: 0 })
-  const visible = useRef(false)
-  const expanded = useRef(false)
-
   useEffect(() => {
     // Skip on touch devices
-    if (globalThis.matchMedia('(pointer: coarse)').matches) return
+    if (globalThis.matchMedia('(pointer: coarse)').matches) {
+      document.body.style.cursor = 'auto';
+      return;
+    }
 
-    const cursor = cursorRef.current
-    const ring = ringRef.current
+    const cursor = document.getElementById('cursor')
+    const ring = document.getElementById('cursorRing')
     if (!cursor || !ring) return
 
+    let mx = 0, my = 0, rx = 0, ry = 0
+
     const onMouseMove = (e: MouseEvent) => {
-      pos.current = { x: e.clientX, y: e.clientY }
-      cursor.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`
-      if (!visible.current) {
-        visible.current = true
-        cursor.style.opacity = '1'
-        ring.style.opacity = '1'
-      }
+      mx = e.clientX
+      my = e.clientY
+      cursor.style.left = mx + 'px'
+      cursor.style.top = my + 'px'
     }
 
-    const onMouseDown = () => {
-      cursor.style.transform = `translate(${pos.current.x - 4}px, ${pos.current.y - 4}px) scale(0.8)`
-    }
-
-    const onMouseUp = () => {
-      cursor.style.transform = `translate(${pos.current.x - 4}px, ${pos.current.y - 4}px) scale(1)`
-    }
-
-    const onMouseEnterInteractive = () => {
-      expanded.current = true
-    }
-
-    const onMouseLeaveInteractive = () => {
-      expanded.current = false
-    }
-
-    // Animate ring with lag
     let rafId: number
     const animateRing = () => {
-      ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.15
-      ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.15
-      const size = expanded.current ? 56 : 36
-      const offset = size / 2
-      ring.style.width = `${size}px`
-      ring.style.height = `${size}px`
-      ring.style.transform = `translate(${ringPos.current.x - offset}px, ${ringPos.current.y - offset}px)`
+      rx += (mx - rx) * 0.12
+      ry += (my - ry) * 0.12
+      ring.style.left = rx + 'px'
+      ring.style.top = ry + 'px'
       rafId = requestAnimationFrame(animateRing)
     }
     rafId = requestAnimationFrame(animateRing)
 
     document.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('mousedown', onMouseDown)
-    document.addEventListener('mouseup', onMouseUp)
 
-    // Add hover listeners for interactive elements
-    const interactiveSelectors = 'a, button, [role="button"], input, textarea, select, [data-cursor-hover]'
-    const interactives = document.querySelectorAll(interactiveSelectors)
-    interactives.forEach((el) => {
-      el.addEventListener('mouseenter', onMouseEnterInteractive)
-      el.addEventListener('mouseleave', onMouseLeaveInteractive)
-    })
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as Element
+      const interactiveEl = target.closest('a, button, .portfolio-item, .service-card, .client-logo, input, textarea, select')
+      if (interactiveEl) {
+        ring.style.width = '56px'
+        ring.style.height = '56px'
+        ring.style.borderColor = 'rgba(201,169,110,0.8)'
+        cursor.style.opacity = '0'
+      }
+    }
 
-    // MutationObserver to handle dynamically added interactive elements
-    const observer = new MutationObserver(() => {
-      const els = document.querySelectorAll(interactiveSelectors)
-      els.forEach((el) => {
-        el.removeEventListener('mouseenter', onMouseEnterInteractive)
-        el.removeEventListener('mouseleave', onMouseLeaveInteractive)
-        el.addEventListener('mouseenter', onMouseEnterInteractive)
-        el.addEventListener('mouseleave', onMouseLeaveInteractive)
-      })
-    })
-    observer.observe(document.body, { childList: true, subtree: true })
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as Element
+      const interactiveEl = target.closest('a, button, .portfolio-item, .service-card, .client-logo, input, textarea, select')
+      if (interactiveEl) {
+        ring.style.width = '36px'
+        ring.style.height = '36px'
+        ring.style.borderColor = 'rgba(201,169,110,0.5)'
+        cursor.style.opacity = '1'
+      }
+    }
+
+    document.addEventListener('mouseover', handleMouseOver)
+    document.addEventListener('mouseout', handleMouseOut)
+
+    // Intersection Observer for reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
 
     return () => {
       cancelAnimationFrame(rafId)
       document.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('mousedown', onMouseDown)
-      document.removeEventListener('mouseup', onMouseUp)
-      interactives.forEach((el) => {
-        el.removeEventListener('mouseenter', onMouseEnterInteractive)
-        el.removeEventListener('mouseleave', onMouseLeaveInteractive)
-      })
+      document.removeEventListener('mouseover', handleMouseOver)
+      document.removeEventListener('mouseout', handleMouseOut)
       observer.disconnect()
     }
   }, [])
 
   return (
     <>
-      <div
-        ref={cursorRef}
-        className="custom-cursor pointer-events-none fixed top-0 left-0 z-9999 rounded-full opacity-0"
-        style={{
-          width: 8,
-          height: 8,
-          backgroundColor: 'var(--gold)',
-          transition: 'opacity 0.3s, transform 0.1s',
-        }}
-      />
-      <div
-        ref={ringRef}
-        className="cursor-ring pointer-events-none fixed top-0 left-0 z-9998 rounded-full opacity-0"
-        style={{
-          width: 36,
-          height: 36,
-          border: '1px solid var(--gold)',
-          transition: 'width 0.3s, height 0.3s, opacity 0.3s',
-        }}
-      />
+      <div className="cursor" id="cursor" />
+      <div className="cursor-ring" id="cursorRing" />
     </>
   )
 }

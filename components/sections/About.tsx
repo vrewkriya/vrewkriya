@@ -1,151 +1,202 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SectionLabel from "@/components/ui/SectionLabel";
-import GemIllustration from "@/components/ui/GemIllustration";
-
-gsap.registerPlugin(ScrollTrigger);
-
-export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const prefersReduced = globalThis.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (prefersReduced) return;
-
-    const ctx = gsap.context(() => {
-      const elements = gsap.utils.toArray<Element>(".reveal-about");
-      elements.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+﻿export default function About() {
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      className="grid grid-cols-1 md:grid-cols-2 min-h-screen"
-      style={{ background: "var(--bg)" }}
-    >
-      {/* Left panel — visual */}
-      <div
-        className="reveal-about relative flex flex-col items-center justify-center p-8 md:p-16"
-        style={{
-          background: "linear-gradient(135deg, #1e1020, #0a0a0d)",
-        }}
-      >
-        <GemIllustration width={280} height={280} className="mb-8" />
-        <h3
-          className="font-display font-light text-gold-dim uppercase tracking-widest3"
-          style={{ fontSize: "0.9rem" }}
-        >
-          Vrew Kriya
-        </h3>
+    <section id="about">
+      <div className="about-visual">
+        <div className="about-img-bg"></div>
+        <div className="about-gem-visual">
+          <svg width="280" height="340" viewBox="0 0 280 340" fill="none">
+            <defs>
+              <linearGradient id="ag1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#4a2c6e" />
+                <stop offset="100%" stopColor="#1a0e28" />
+              </linearGradient>
+              <radialGradient id="ag2" cx="40%" cy="35%">
+                <stop offset="0%" stopColor="#c9a96e" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="transparent" />
+              </radialGradient>
+              <filter id="ag-glow">
+                <feGaussianBlur stdDeviation="8" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <ellipse
+              cx="140"
+              cy="160"
+              rx="110"
+              ry="110"
+              fill="none"
+              stroke="#c9a96e"
+              strokeWidth="0.5"
+              strokeOpacity="0.2"
+              filter="url(#ag-glow)"
+            />
+            <ellipse
+              cx="140"
+              cy="160"
+              rx="90"
+              ry="90"
+              fill="none"
+              stroke="#c9a96e"
+              strokeWidth="0.3"
+              strokeOpacity="0.1"
+            />
+
+            <polygon
+              points="140,50 195,90 185,87 140,65 95,87 85,90"
+              fill="url(#ag2)"
+              stroke="#c9a96e"
+              strokeWidth="0.7"
+            />
+            <polygon
+              points="140,65 185,87 140,125 95,87"
+              fill="url(#ag1)"
+              stroke="#c9a96e"
+              strokeWidth="0.6"
+              opacity="0.9"
+            />
+            <polygon
+              points="85,90 95,87 140,125 95,145"
+              fill="#1a0e28"
+              stroke="#c9a96e"
+              strokeWidth="0.5"
+            />
+            <polygon
+              points="195,90 185,87 140,125 185,145"
+              fill="#2a1840"
+              stroke="#c9a96e"
+              strokeWidth="0.5"
+              opacity="0.8"
+            />
+            <polygon
+              points="95,145 140,125 185,145 140,195"
+              fill="#120a20"
+              stroke="#c9a96e"
+              strokeWidth="0.5"
+            />
+            <polygon
+              points="85,90 95,145 140,210"
+              fill="#0e0818"
+              stroke="#c9a96e"
+              strokeWidth="0.4"
+              opacity="0.7"
+            />
+            <polygon
+              points="195,90 185,145 140,210"
+              fill="#1a1030"
+              stroke="#c9a96e"
+              strokeWidth="0.4"
+              opacity="0.6"
+            />
+            <line
+              x1="140"
+              y1="210"
+              x2="140"
+              y2="218"
+              stroke="#c9a96e"
+              strokeWidth="1"
+              strokeOpacity="0.5"
+              filter="url(#ag-glow)"
+            />
+
+            <g filter="url(#ag-glow)" opacity="0.8">
+              <line
+                x1="70"
+                y1="76"
+                x2="78"
+                y2="76"
+                stroke="#c9a96e"
+                strokeWidth="0.8"
+              />
+              <line
+                x1="74"
+                y1="72"
+                x2="74"
+                y2="80"
+                stroke="#c9a96e"
+                strokeWidth="0.8"
+              />
+            </g>
+            <circle
+              cx="120"
+              cy="72"
+              r="2"
+              fill="#c9a96e"
+              opacity="0.6"
+              filter="url(#ag-glow)"
+            />
+            <circle cx="172" cy="96" r="1.5" fill="#ffffff" opacity="0.5" />
+
+            <text
+              x="140"
+              y="265"
+              fontFamily="Cormorant Garamond, serif"
+              fontSize="10"
+              fontWeight="300"
+              fill="#c9a96e"
+              opacity="0.5"
+              textAnchor="middle"
+              letterSpacing="5"
+            >
+              VREW KRIYA
+            </text>
+            <line
+              x1="80"
+              y1="270"
+              x2="115"
+              y2="270"
+              stroke="#c9a96e"
+              strokeWidth="0.4"
+              strokeOpacity="0.3"
+            />
+            <line
+              x1="165"
+              y1="270"
+              x2="200"
+              y2="270"
+              stroke="#c9a96e"
+              strokeWidth="0.4"
+              strokeOpacity="0.3"
+            />
+          </svg>
+        </div>
       </div>
 
-      {/* Right panel — content */}
-      <div className="reveal-about flex flex-col justify-center p-8 md:p-16 md:pl-12">
-        <SectionLabel>About Us</SectionLabel>
-
-        <h2 className="font-display font-light text-cream text-4xl md:text-5xl mt-6 mb-8 leading-tight">
-          We Tell Stories in{" "}
-          <span className="italic text-gold">Light & Shadow</span>
+      <div className="about-content">
+        <p className="section-label reveal">The Studio</p>
+        <h2 className="section-title about-title reveal reveal-delay-1">
+          We Tell Stories
+          <br />
+          in <em>Light & Shadow</em>
         </h2>
-
-        <p
-          className="font-sans font-extralight text-cream-dim leading-relaxed mb-5"
-          style={{ fontSize: "0.85rem" }}
-        >
-          Since 2024, we've been obsessed with one singular truth: jewelry
-          doesn't just sparkle — it resonates. Every campaign we craft, every
-          frame we compose, every light we bend is calibrated to make that
-          resonance felt. We work with brands that refuse mediocrity.
+        <p className="about-text reveal reveal-delay-2">
+          Vrew Kriya was born from a singular conviction — that jewelry is not
+          just adornment, it is memory, lineage, and identity. Brands that carry
+          this weight deserve a visual partner who understands it.
         </p>
-
-        <p
-          className="font-sans font-extralight text-cream-dim leading-relaxed mb-8"
-          style={{ fontSize: "0.85rem" }}
-        >
-          From initial concept to final delivery, we treat your vision as a
-          visual language. Our process is rigorous. Our aesthetic is
-          unmistakable. Our results speak.
+        <p className="about-text reveal reveal-delay-3">
+          We are a boutique studio working at the intersection of craft and
+          commerce. Our approach blends the restraint of old-world luxury
+          aesthetics with the precision of modern digital storytelling.
         </p>
-
-        <a
-          href="#contact"
-          className="font-sans font-extralight text-gold-dim uppercase tracking-widest2 underline underline-offset-4 decoration-gold-dim/40 transition-colors hover:text-gold mb-12 inline-block"
-          style={{ fontSize: "0.6rem" }}
-        >
+        <a href="#contact" className="btn-ghost reveal reveal-delay-3">
           Work With Us
         </a>
 
-        {/* Stats divider */}
-        <hr className="gold-hr mb-8" />
-
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-6">
-          <div>
-            <p
-              className="font-display font-light text-gold leading-none mb-2"
-              style={{ fontSize: "3.25rem" }}
-            >
-              48+
-            </p>
-            <p
-              className="font-sans font-extralight text-cream-dim uppercase tracking-widest2"
-              style={{ fontSize: "0.6rem" }}
-            >
-              Projects
-            </p>
+        <div className="about-stats">
+          <div className="reveal reveal-delay-1">
+            <div className="stat-num">48+</div>
+            <div className="stat-label">Brands Served</div>
           </div>
-          <div>
-            <p
-              className="font-display font-light text-gold leading-none mb-2"
-              style={{ fontSize: "3.25rem" }}
-            >
-              6
-            </p>
-            <p
-              className="font-sans font-extralight text-cream-dim uppercase tracking-widest2"
-              style={{ fontSize: "0.6rem" }}
-            >
-              Countries
-            </p>
+          <div className="reveal reveal-delay-2">
+            <div className="stat-num">6</div>
+            <div className="stat-label">Years of Craft</div>
           </div>
-          <div>
-            <p
-              className="font-display font-light text-gold leading-none mb-2"
-              style={{ fontSize: "3.25rem" }}
-            >
-              ∞
-            </p>
-            <p
-              className="font-sans font-extralight text-cream-dim uppercase tracking-widest2"
-              style={{ fontSize: "0.6rem" }}
-            >
-              Luxury Brands
-            </p>
+          <div className="reveal reveal-delay-3">
+            <div className="stat-num">∞</div>
+            <div className="stat-label">Stories Left to Tell</div>
           </div>
         </div>
       </div>

@@ -1,146 +1,306 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import GemIllustration from "@/components/ui/GemIllustration";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect } from "react";
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
-    const prefersReduced = globalThis.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (prefersReduced) return;
+    // Parallax on hero gem
+    const heroGem = document.querySelector(".hero-gem") as HTMLElement;
+    const scrollHandler = () => {
+      const sy = window.scrollY;
+      if (heroGem) {
+        heroGem.style.transform = `translate(-50%, calc(-50% + ${sy * 0.25}px))`;
+        heroGem.style.opacity = Math.max(0, 1 - sy / 600).toString();
+      }
+    };
 
-    const ctx = gsap.context(() => {
-      // Staggered entrance animation
-      gsap.fromTo(
-        ".hero-animate",
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power2.out",
-          stagger: 0.15,
-        },
-      );
-
-      // Gem parallax on scroll
-      gsap.to(".hero-gem", {
-        yPercent: 25,
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
+    window.addEventListener("scroll", scrollHandler);
+    return () => window.removeEventListener("scroll", scrollHandler);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const target = document.querySelector(href);
-    target?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <section
-      id="hero"
-      ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse 80% 70% at 50% 55%, #1a1228 0%, var(--bg) 70%)",
-      }}
-    >
-      {/* Gem — positioned behind text */}
-      <div className="hero-gem absolute inset-0 flex items-center justify-center pointer-events-none">
-        <GemIllustration
-          width={520}
-          height={520}
-          className="animate-float opacity-30"
-        />
+    <section id="hero">
+      <div className="hero-bg"></div>
+
+      {/* Floating Gem */}
+      <div className="hero-gem">
+        <svg
+          viewBox="0 0 520 520"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#4a2c6e" />
+              <stop offset="50%" stopColor="#1a1228" />
+              <stop offset="100%" stopColor="#2a1840" />
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#c9a96e" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#8a6e42" stopOpacity="0.3" />
+            </linearGradient>
+            <linearGradient id="g3" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#6a3fa0" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#2a1840" stopOpacity="0.1" />
+            </linearGradient>
+            <linearGradient id="g4" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stopColor="#1a0e28" />
+              <stop offset="100%" stopColor="#3a2060" />
+            </linearGradient>
+            <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#c9a96e" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="transparent" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="12" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id="softGlow">
+              <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Outer glow ring */}
+          <ellipse
+            cx="260"
+            cy="260"
+            rx="200"
+            ry="200"
+            fill="none"
+            stroke="#c9a96e"
+            strokeWidth="0.5"
+            strokeOpacity="0.15"
+            filter="url(#glow)"
+          />
+          <ellipse
+            cx="260"
+            cy="260"
+            rx="220"
+            ry="220"
+            fill="none"
+            stroke="#c9a96e"
+            strokeWidth="0.3"
+            strokeOpacity="0.08"
+          />
+
+          {/* Main gem body - brilliant cut diamond shape */}
+          <polygon
+            points="260,100 340,160 320,155 260,115 200,155 180,160"
+            fill="url(#g5)"
+            stroke="url(#g2)"
+            strokeWidth="0.8"
+          />
+          <polygon
+            points="260,115 320,155 260,195 200,155"
+            fill="url(#g1)"
+            stroke="url(#g2)"
+            strokeWidth="0.6"
+            opacity="0.9"
+          />
+          <polygon
+            points="260,115 340,160 320,155"
+            fill="#c9a96e"
+            opacity="0.12"
+            stroke="#c9a96e"
+            strokeWidth="0.4"
+          />
+          <polygon
+            points="260,115 200,155 180,160"
+            fill="#c9a96e"
+            opacity="0.08"
+            stroke="#c9a96e"
+            strokeWidth="0.4"
+          />
+
+          {/* Bezel facets left */}
+          <polygon
+            points="180,160 200,155 260,195 200,255"
+            fill="url(#g4)"
+            stroke="url(#g2)"
+            strokeWidth="0.6"
+            opacity="0.85"
+          />
+          {/* Bezel facets right */}
+          <polygon
+            points="340,160 320,155 260,195 320,255"
+            fill="url(#g3)"
+            stroke="url(#g2)"
+            strokeWidth="0.6"
+            opacity="0.75"
+          />
+
+          {/* Girdle */}
+          <polygon
+            points="200,255 260,195 320,255 260,280"
+            fill="url(#g1)"
+            stroke="url(#g2)"
+            strokeWidth="0.5"
+            opacity="0.9"
+          />
+
+          {/* Pavilion left */}
+          <polygon
+            points="180,160 200,255 260,350"
+            fill="url(#g4)"
+            stroke="url(#g2)"
+            strokeWidth="0.5"
+            opacity="0.7"
+          />
+          <polygon
+            points="200,255 260,280 260,350"
+            fill="#1a1228"
+            stroke="#c9a96e"
+            strokeWidth="0.4"
+            opacity="0.8"
+          />
+
+          {/* Pavilion right */}
+          <polygon
+            points="340,160 320,255 260,350"
+            fill="url(#g3)"
+            stroke="url(#g2)"
+            strokeWidth="0.5"
+            opacity="0.6"
+          />
+          <polygon
+            points="320,255 260,280 260,350"
+            fill="#2a1840"
+            stroke="#c9a96e"
+            strokeWidth="0.4"
+            opacity="0.7"
+          />
+
+          {/* Culet (bottom point) */}
+          <line
+            x1="260"
+            y1="350"
+            x2="260"
+            y2="360"
+            stroke="#c9a96e"
+            strokeWidth="1"
+            strokeOpacity="0.6"
+            filter="url(#softGlow)"
+          />
+
+          {/* Light reflections / sparkles */}
+          <circle
+            cx="240"
+            cy="148"
+            r="3"
+            fill="#c9a96e"
+            opacity="0.8"
+            filter="url(#softGlow)"
+          />
+          <circle
+            cx="300"
+            cy="168"
+            r="2"
+            fill="#ffffff"
+            opacity="0.6"
+            filter="url(#softGlow)"
+          />
+          <circle cx="220" cy="190" r="1.5" fill="#c9a96e" opacity="0.5" />
+
+          {/* Small sparkles floating */}
+          <g filter="url(#softGlow)" opacity="0.7">
+            <line
+              x1="150"
+              y1="140"
+              x2="158"
+              y2="140"
+              stroke="#c9a96e"
+              strokeWidth="0.8"
+            />
+            <line
+              x1="154"
+              y1="136"
+              x2="154"
+              y2="144"
+              stroke="#c9a96e"
+              strokeWidth="0.8"
+            />
+          </g>
+          <g filter="url(#softGlow)" opacity="0.5">
+            <line
+              x1="370"
+              y1="190"
+              x2="376"
+              y2="190"
+              stroke="#c9a96e"
+              strokeWidth="0.6"
+            />
+            <line
+              x1="373"
+              y1="187"
+              x2="373"
+              y2="193"
+              stroke="#c9a96e"
+              strokeWidth="0.6"
+            />
+          </g>
+          <g filter="url(#softGlow)" opacity="0.4">
+            <line
+              x1="200"
+              y1="310"
+              x2="205"
+              y2="310"
+              stroke="#c9a96e"
+              strokeWidth="0.5"
+            />
+            <line
+              x1="202.5"
+              y1="307.5"
+              x2="202.5"
+              y2="312.5"
+              stroke="#c9a96e"
+              strokeWidth="0.5"
+            />
+          </g>
+
+          {/* Top line accent */}
+          <line
+            x1="180"
+            y1="160"
+            x2="340"
+            y2="160"
+            stroke="url(#g2)"
+            strokeWidth="0.5"
+            opacity="0.6"
+          />
+        </svg>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6">
-        {/* Eyebrow */}
-        <div className="hero-animate flex items-center gap-3 mb-8">
-          <span
-            className="block w-8 h-px opacity-50"
-            style={{ background: "var(--gold-dim)" }}
-          />
-          <span
-            className="font-sans font-light text-gold-dim uppercase tracking-widest3"
-            style={{ fontSize: "0.6rem" }}
-          >
-            Est. 2024 · Mumbai
-          </span>
-          <span
-            className="block w-8 h-px opacity-50"
-            style={{ background: "var(--gold-dim)" }}
-          />
-        </div>
-
-        {/* Headline */}
-        <h1 className="hero-animate font-display font-light leading-none mb-6">
-          <span className="block text-cream text-6xl md:text-8xl lg:text-[108px]">
-            Where Jewelry
-          </span>
-          <span className="block text-gold italic text-6xl md:text-8xl lg:text-[108px]">
-            Meets Light
-          </span>
+      <div className="hero-content">
+        <p className="hero-eyebrow">Est. 2024 &nbsp;·&nbsp; Mumbai</p>
+        <h1 className="hero-title">
+          Where Jewelry
+          <br />
+          <em>Meets</em> Light
         </h1>
-
-        {/* Subtext */}
-        <p
-          className="hero-animate font-sans font-extralight text-cream-dim max-w-sm mb-10 leading-relaxed"
-          style={{ fontSize: "0.78rem" }}
-        >
+        <p className="hero-sub">
           A luxury visual studio crafting campaigns, shoots, and digital
           presence for jewelry brands that deserve to be felt.
         </p>
-
-        {/* Buttons */}
-        <div className="hero-animate flex items-center gap-6">
-          <button
-            onClick={() => scrollToSection("#contact")}
-            className="bg-gold text-bg font-sans font-normal uppercase tracking-widest2 px-7 py-3 transition-all hover:bg-gold-dim"
-            style={{ fontSize: "0.6rem" }}
-          >
-            Book a Consultation
-          </button>
-          <button
-            onClick={() => scrollToSection("#portfolio")}
-            className="font-sans font-extralight text-cream-dim uppercase tracking-widest2 underline underline-offset-4 decoration-gold-dim/40 transition-colors hover:text-cream"
-            style={{ fontSize: "0.6rem" }}
-          >
-            View Our Work
-          </button>
+        <div className="hero-btns">
+          <a href="#portfolio" className="btn-primary">
+            See Our Work
+          </a>
+          <a href="#services" className="btn-ghost">
+            Our Services
+          </a>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="hero-animate absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-        <span
-          className="block w-px h-10"
-          style={{ background: "var(--gold-dim)", opacity: 0.4 }}
-        />
-        <span
-          className="font-sans font-extralight text-gold-dim uppercase tracking-widest3"
-          style={{ fontSize: "0.5rem" }}
-        >
-          Scroll
-        </span>
+      <div className="scroll-hint">
+        <div className="scroll-line"></div>
+        <span>Scroll</span>
       </div>
     </section>
   );

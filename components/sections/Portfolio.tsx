@@ -1,211 +1,308 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SectionLabel from "@/components/ui/SectionLabel";
-import GemIllustration from "@/components/ui/GemIllustration";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const portfolioData = [
-  {
-    id: 1,
-    title: "Aurelia Campaign",
-    category: "Campaigns",
-    width: 440,
-    height: 560,
-    offsetY: 0,
-    gradient: "linear-gradient(135deg, #1a2240 0%, #0a1420 100%)",
-  },
-  {
-    id: 2,
-    title: "Rasa Fine Shoot",
-    category: "Shoots",
-    width: 280,
-    height: 480,
-    offsetY: 60,
-    gradient: "linear-gradient(135deg, #2a0e14 0%, #1a0809 100%)",
-  },
-  {
-    id: 3,
-    title: "Digital Presence",
-    category: "Digital",
-    width: 360,
-    height: 440,
-    offsetY: -40,
-    gradient: "linear-gradient(135deg, #0f2318 0%, #071410 100%)",
-  },
-  {
-    id: 4,
-    title: "Heirloom Editorial",
-    category: "Shoots",
-    width: 320,
-    height: 540,
-    offsetY: 80,
-    gradient: "linear-gradient(135deg, #1a1540 0%, #0d0825 100%)",
-  },
-  {
-    id: 5,
-    title: "Maison Veth Brand",
-    category: "Campaigns",
-    width: 260,
-    height: 420,
-    offsetY: 20,
-    gradient: "linear-gradient(135deg, #2a1a0a 0%, #1a0f05 100%)",
-  },
-];
-
-const filterOptions = ["All", "Shoots", "Campaigns", "Digital"];
+﻿"use client";
+import { useEffect, useRef } from "react";
 
 export default function Portfolio() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReduced = globalThis.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (prefersReduced) return;
+    // Portfolio filter
+    const lis = document.querySelectorAll(".portfolio-filter li");
+    const handleClick = (e: Event) => {
+      const li = e.currentTarget as HTMLLIElement;
+      lis.forEach((l) => l.classList.remove("active"));
+      li.classList.add("active");
+    };
 
-    const ctx = gsap.context(() => {
-      const elements = gsap.utils.toArray<Element>(".reveal-port");
-      elements.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      });
+    lis.forEach((li) => {
+      li.addEventListener("click", handleClick);
     });
 
-    return () => ctx.revert();
+    // Smooth horizontal scroll on portfolio with mouse drag
+    const scroll = scrollRef.current;
+    if (!scroll) return;
+
+    let isDown = false,
+      startX: number,
+      scrollLeft: number;
+
+    const onMouseDown = (e: MouseEvent) => {
+      isDown = true;
+      startX = e.pageX - scroll.offsetLeft;
+      scrollLeft = scroll.scrollLeft;
+      scroll.style.cursor = "grabbing";
+    };
+    const onMouseLeave = () => {
+      isDown = false;
+      scroll.style.cursor = "none";
+    };
+    const onMouseUp = () => {
+      isDown = false;
+      scroll.style.cursor = "none";
+    };
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scroll.offsetLeft;
+      scroll.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    };
+
+    scroll.addEventListener("mousedown", onMouseDown);
+    scroll.addEventListener("mouseleave", onMouseLeave);
+    scroll.addEventListener("mouseup", onMouseUp);
+    scroll.addEventListener("mousemove", onMouseMove);
+
+    return () => {
+      scroll.removeEventListener("mousedown", onMouseDown);
+      scroll.removeEventListener("mouseleave", onMouseLeave);
+      scroll.removeEventListener("mouseup", onMouseUp);
+      scroll.removeEventListener("mousemove", onMouseMove);
+    };
   }, []);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 1.2;
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
   return (
-    <section
-      id="portfolio"
-      className="py-36 px-8 md:px-16"
-      style={{ background: "var(--bg)" }}
-    >
-      {/* Header */}
-      <div className="reveal-port flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
-        {/* Left — Label + Title */}
+    <section id="portfolio">
+      <div className="portfolio-header">
         <div>
-          <SectionLabel>Our Portfolio</SectionLabel>
-          <h2 className="font-display font-light text-cream text-4xl md:text-5xl mt-5 leading-tight">
-            Works that <span className="italic text-gold">Inspire</span>
+          <p className="section-label reveal">Selected Work</p>
+          <h2 className="section-title portfolio-title reveal reveal-delay-1">
+            The Portfolio
           </h2>
         </div>
-
-        {/* Right — Filter tabs */}
-        <div className="flex items-center gap-4">
-          {filterOptions.map((filter) => (
-            <button
-              key={filter}
-              className="font-sans font-extralight text-cream-dim uppercase tracking-widest2 transition-colors hover:text-cream pb-2"
-              style={{
-                fontSize: "0.6rem",
-                borderBottom:
-                  filter === "All"
-                    ? "1px solid var(--gold-dim)"
-                    : "1px solid transparent",
-              }}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
+        <ul className="portfolio-filter reveal reveal-delay-2">
+          <li className="active">All</li>
+          <li>Shoots</li>
+          <li>Campaigns</li>
+          <li>Digital</li>
+        </ul>
       </div>
 
-      {/* Horizontal scroll strip — drag to scroll interaction */}
-      <section
-        aria-label="Portfolio carousel - scroll to view projects"
-        className="relative"
-      >
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-        <div
-          ref={scrollContainerRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          className="scroll-strip flex gap-6 overflow-x-auto pb-6 cursor-grab active:cursor-grabbing"
-        >
-          {portfolioData.map((project) => (
-            <div
-              key={project.id}
-              className="reveal-port group relative shrink-0 overflow-hidden"
-              style={{
-                width: project.width,
-                height: project.height,
-                marginTop: project.offsetY,
-              }}
-            >
-              {/* Card background */}
-              <div
-                className="absolute inset-0"
-                style={{ background: project.gradient }}
+      <div className="portfolio-scroll" ref={scrollRef}>
+        <div className="portfolio-item">
+          <div className="portfolio-img port-bg-1 port-gem-placeholder">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+              <polygon
+                points="60,15 95,40 90,38 60,25 30,38 25,40"
+                fill="#c9a96e"
+                opacity="0.15"
+                stroke="#c9a96e"
+                strokeWidth="0.6"
               />
-
-              {/* Gem illustration centered */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <GemIllustration
-                  width={Math.min(project.width * 0.4, 120)}
-                  height={Math.min(project.height * 0.4, 120)}
-                />
-              </div>
-
-              {/* Hover overlay — slides up from bottom */}
-              <div
-                className="absolute inset-0 bg-black/60 flex flex-col items-center justify-end p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-                style={{ backdropFilter: "blur(4px)" }}
-              >
-                <h3 className="font-display font-light text-cream text-lg text-center leading-tight">
-                  {project.title}
-                </h3>
-                <p
-                  className="font-sans font-extralight text-gold-dim uppercase tracking-widest2 mt-2"
-                  style={{ fontSize: "0.5rem" }}
-                >
-                  {project.category}
-                </p>
-              </div>
+              <polygon
+                points="60,25 90,38 60,62 30,38"
+                fill="#1a2240"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+                opacity="0.8"
+              />
+              <polygon
+                points="25,40 30,38 60,62 30,78"
+                fill="#0d1830"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+              />
+              <polygon
+                points="95,40 90,38 60,62 90,78"
+                fill="#1a2844"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+              />
+              <polygon
+                points="30,78 60,62 90,78 60,105"
+                fill="#0a1020"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+              />
+              <circle cx="52" cy="34" r="2" fill="#c9a96e" opacity="0.7" />
+            </svg>
+          </div>
+          <div className="portfolio-overlay">
+            <div className="portfolio-meta">
+              <h4>Azura Collection</h4>
+              <p>Campaign · 2024</p>
             </div>
-          ))}
+          </div>
         </div>
-      </section>
+        <div className="portfolio-item">
+          <div className="portfolio-img port-bg-2 port-gem-placeholder">
+            <svg width="80" height="100" viewBox="0 0 80 100" fill="none">
+              <ellipse
+                cx="40"
+                cy="32"
+                rx="22"
+                ry="28"
+                fill="#2a0e14"
+                stroke="#c9a96e"
+                strokeWidth="0.6"
+                opacity="0.9"
+              />
+              <ellipse
+                cx="40"
+                cy="30"
+                rx="14"
+                ry="18"
+                fill="#c9a96e"
+                opacity="0.07"
+              />
+              <line
+                x1="40"
+                y1="60"
+                x2="40"
+                y2="90"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+                opacity="0.4"
+              />
+              <ellipse
+                cx="40"
+                cy="32"
+                rx="6"
+                ry="8"
+                fill="#c9a96e"
+                opacity="0.2"
+              />
+              <circle cx="33" cy="24" r="2" fill="#c9a96e" opacity="0.5" />
+            </svg>
+          </div>
+          <div className="portfolio-overlay">
+            <div className="portfolio-meta">
+              <h4>Rouge Eternel</h4>
+              <p>Editorial · 2024</p>
+            </div>
+          </div>
+        </div>
+        <div className="portfolio-item">
+          <div className="portfolio-img port-bg-3 port-gem-placeholder">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+              <polygon
+                points="50,8 85,30 85,70 50,92 15,70 15,30"
+                fill="#0f2318"
+                stroke="#c9a96e"
+                strokeWidth="0.6"
+              />
+              <polygon
+                points="50,8 85,30 50,50 15,30"
+                fill="#1a3820"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+                opacity="0.8"
+              />
+              <polygon
+                points="15,30 50,50 15,70"
+                fill="#0c1e10"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="85,30 50,50 85,70"
+                fill="#162c18"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="15,70 50,50 85,70 50,92"
+                fill="#081208"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <circle cx="44" cy="22" r="2" fill="#c9a96e" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="portfolio-overlay">
+            <div className="portfolio-meta">
+              <h4>Forest Reverie</h4>
+              <p>Shoot · 2023</p>
+            </div>
+          </div>
+        </div>
+        <div className="portfolio-item">
+          <div className="portfolio-img port-bg-4 port-gem-placeholder">
+            <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
+              <polygon
+                points="50,5 80,25 70,22 50,12 30,22 20,25"
+                fill="#c9a96e"
+                opacity="0.12"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+              />
+              <polygon
+                points="50,12 70,22 50,42 30,22"
+                fill="#1e1530"
+                stroke="#c9a96e"
+                strokeWidth="0.5"
+              />
+              <polygon
+                points="20,25 30,22 50,42 30,55"
+                fill="#140c20"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="80,25 70,22 50,42 70,55"
+                fill="#1e1535"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="30,55 50,42 70,55 50,75"
+                fill="#0e0a18"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <circle cx="44" cy="16" r="1.5" fill="#c9a96e" opacity="0.7" />
+            </svg>
+          </div>
+          <div className="portfolio-overlay">
+            <div className="portfolio-meta">
+              <h4>Lumière Noire</h4>
+              <p>Campaign · 2023</p>
+            </div>
+          </div>
+        </div>
+        <div className="portfolio-item">
+          <div className="portfolio-img port-bg-5 port-gem-placeholder">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <polygon
+                points="40,5 70,22 70,58 40,75 10,58 10,22"
+                fill="#241810"
+                stroke="#c9a96e"
+                strokeWidth="0.6"
+                opacity="0.9"
+              />
+              <polygon
+                points="40,5 70,22 40,40 10,22"
+                fill="#2e1e10"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="10,22 40,40 10,58"
+                fill="#1a1008"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="70,22 40,40 70,58"
+                fill="#221408"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <polygon
+                points="10,58 40,40 70,58 40,75"
+                fill="#100c04"
+                stroke="#c9a96e"
+                strokeWidth="0.4"
+              />
+              <circle cx="35" cy="16" r="1.5" fill="#c9a96e" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="portfolio-overlay">
+            <div className="portfolio-meta">
+              <h4>Amber Dusk</h4>
+              <p>Digital · 2023</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
