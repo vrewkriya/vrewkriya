@@ -1,4 +1,6 @@
-﻿export default function Footer() {
+﻿import Link from 'next/link';
+
+export default function Footer() {
   return (
     <footer>
       <div className="footer-top">
@@ -7,12 +9,12 @@
           <div className="footer-tagline">Where jewelry brands find their light.</div>
         </div>
         <div className="footer-links">
-          <a href="#services" className="footer-link">Services</a>
-          <a href="#portfolio" className="footer-link">Portfolio</a>
-          <a href="#about" className="footer-link">Studio</a>
-          <a href="#clients" className="footer-link">Clients</a>
-          <a href="#testimonials" className="footer-link">Testimonials</a>
-          <a href="#contact" className="footer-link">Contact</a>
+          <Link href="#services" className="footer-link">Services</Link>
+          <Link href="#portfolio" className="footer-link">Portfolio</Link>
+          <Link href="#about" className="footer-link">Studio</Link>
+          <Link href="#clients" className="footer-link">Clients</Link>
+          <Link href="#testimonials" className="footer-link">Testimonials</Link>
+          <Link href="#contact" className="footer-link">Contact</Link>
         </div>
       </div>
       <div className="footer-bottom">

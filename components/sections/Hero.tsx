@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import Link from "next/link";
+
 export default function Hero() {
   useEffect(() => {
     // Parallax on hero gem
@@ -25,6 +27,7 @@ export default function Hero() {
       {/* Floating Gem */}
       <div className="hero-gem">
         <svg
+          aria-hidden="true"
           viewBox="0 0 520 520"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -289,12 +292,12 @@ export default function Hero() {
           presence for jewelry brands that deserve to be felt.
         </p>
         <div className="hero-btns">
-          <a href="#portfolio" className="btn-primary">
-            See Our Work
-          </a>
-          <a href="#services" className="btn-ghost">
+          <Link href="#portfolio" className="btn-primary">
+            Explore Work
+          </Link>
+          <Link href="#services" className="btn-ghost">
             Our Services
-          </a>
+          </Link>
         </div>
       </div>
 

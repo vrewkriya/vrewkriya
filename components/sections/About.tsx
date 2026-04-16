@@ -1,10 +1,12 @@
-﻿export default function About() {
+﻿import Link from "next/link";
+
+export default function About() {
   return (
     <section id="about">
       <div className="about-visual">
         <div className="about-img-bg"></div>
         <div className="about-gem-visual">
-          <svg width="280" height="340" viewBox="0 0 280 340" fill="none">
+          <svg aria-hidden="true" width="280" height="340" viewBox="0 0 280 340" fill="none">
             <defs>
               <linearGradient id="ag1" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#4a2c6e" />
@@ -181,9 +183,9 @@
           commerce. Our approach blends the restraint of old-world luxury
           aesthetics with the precision of modern digital storytelling.
         </p>
-        <a href="#contact" className="btn-ghost reveal reveal-delay-3">
+        <Link href="#contact" className="btn-ghost reveal reveal-delay-3">
           Work With Us
-        </a>
+        </Link>
 
         <div className="about-stats">
           <div className="reveal reveal-delay-1">

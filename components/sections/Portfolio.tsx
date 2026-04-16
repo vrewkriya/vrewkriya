@@ -1,22 +1,11 @@
 ﻿"use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Portfolio() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeFilter, setActiveFilter] = useState("All");
 
   useEffect(() => {
-    // Portfolio filter
-    const lis = document.querySelectorAll(".portfolio-filter li");
-    const handleClick = (e: Event) => {
-      const li = e.currentTarget as HTMLLIElement;
-      lis.forEach((l) => l.classList.remove("active"));
-      li.classList.add("active");
-    };
-
-    lis.forEach((li) => {
-      li.addEventListener("click", handleClick);
-    });
-
     // Smooth horizontal scroll on portfolio with mouse drag
     const scroll = scrollRef.current;
     if (!scroll) return;
@@ -69,17 +58,37 @@ export default function Portfolio() {
           </h2>
         </div>
         <ul className="portfolio-filter reveal reveal-delay-2">
-          <li className="active">All</li>
-          <li>Shoots</li>
-          <li>Campaigns</li>
-          <li>Digital</li>
+          {["All", "Shoots", "Campaigns", "Digital"].map((filter) => (
+            <li
+              key={filter}
+              className={activeFilter === filter ? "active" : ""}
+            >
+              <button
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  font: "inherit",
+                  color: "inherit",
+                  cursor: "pointer",
+                  display: "block",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {filter}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
 
       <div className="portfolio-scroll" ref={scrollRef}>
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-1 port-gem-placeholder">
-            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+            <svg aria-hidden="true" width="120" height="120" viewBox="0 0 120 120" fill="none">
               <polygon
                 points="60,15 95,40 90,38 60,25 30,38 25,40"
                 fill="#c9a96e"
@@ -172,7 +181,7 @@ export default function Portfolio() {
         </div>
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-3 port-gem-placeholder">
-            <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <svg aria-hidden="true" width="80" height="100" viewBox="0 0 80 100" fill="none">
               <polygon
                 points="50,8 85,30 85,70 50,92 15,70 15,30"
                 fill="#0f2318"
@@ -216,7 +225,7 @@ export default function Portfolio() {
         </div>
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-4 port-gem-placeholder">
-            <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
+            <svg aria-hidden="true" width="100" height="100" viewBox="0 0 100 100" fill="none">
               <polygon
                 points="50,5 80,25 70,22 50,12 30,22 20,25"
                 fill="#c9a96e"
@@ -260,7 +269,7 @@ export default function Portfolio() {
         </div>
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-5 port-gem-placeholder">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <svg aria-hidden="true" width="100" height="80" viewBox="0 0 100 80" fill="none">
               <polygon
                 points="40,5 70,22 70,58 40,75 10,58 10,22"
                 fill="#241810"

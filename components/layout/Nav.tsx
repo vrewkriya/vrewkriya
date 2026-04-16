@@ -1,16 +1,17 @@
 "use client";
+import Link from 'next/link';
 
 export default function Nav() {
   return (
     <nav>
       <div className="nav-logo">Vrew <span>Kriya</span></div>
       <ul className="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#about">Studio</a></li>
-        <li><a href="#testimonials">Clients</a></li>
+        <li><Link href="#services">Services</Link></li>
+        <li><Link href="#portfolio">Portfolio</Link></li>
+        <li><Link href="#about">Studio</Link></li>
+        <li><Link href="#testimonials">Clients</Link></li>
       </ul>
-      <a href="#contact" className="nav-cta">Book a Shoot</a>
+      <Link href="#contact" className="nav-cta">Book a Shoot</Link>
     </nav>
   );
 }
