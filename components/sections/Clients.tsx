@@ -1,4 +1,18 @@
-﻿export default function Clients() {
+import Image from "next/image";
+import { urlForImage } from "@/sanity/lib/image";
+
+export interface ClientItem {
+  _id: string;
+  name: string;
+  logo?: any;
+  order?: number;
+}
+
+export default function Clients({
+  clientsData,
+}: {
+  readonly clientsData: ClientItem[];
+}) {
   return (
     <section id="clients">
       <div className="clients-label">
@@ -10,11 +24,25 @@
         </p>
       </div>
       <div className="clients-grid">
-        <div className="client-logo reveal">Aurelia</div>
-        <div className="client-logo reveal reveal-delay-1">Rasa Fine</div>
-        <div className="client-logo reveal reveal-delay-2">Nīlam Co.</div>
-        <div className="client-logo reveal reveal-delay-3">Heirloom</div>
-        <div className="client-logo reveal reveal-delay-4">Maison Veth</div>
+        {(clientsData || []).map((client, i) => (
+          <div
+            key={client._id || i}
+            className={"client-logo reveal " + (i === 0 ? "" : `reveal-delay-${i % 4}`)}
+            style={{ position: 'relative', width: 120, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            {client.logo ? (
+              <Image
+                src={urlForImage(client.logo)?.url() || ""}
+                alt={client.name}
+                fill
+                style={{ objectFit: "contain" }}
+                sizes="120px"
+              />
+            ) : (
+              client.name
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );

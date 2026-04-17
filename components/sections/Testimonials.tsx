@@ -1,31 +1,16 @@
-﻿const testimonialsData = [
-  {
-    quote: "Vrew Kriya didn't just shoot our collection — they understood what it meant. The images we received were beyond anything we imagined. Our campaign sold out in 48 hours.",
-    authorPrefix: "P",
-    name: "Priya Mehta",
-    brand: "Founder, Aurelia Jewels",
-    delayClass: "",
-    avClass: "av1"
-  },
-  {
-    quote: "The restraint in their work is what sets them apart. Nothing over-designed, nothing wasted. Pure, distilled elegance that speaks directly to our clientele.",
-    authorPrefix: "A",
-    name: "Aryan Shah",
-    brand: "Creative Dir., Rasa Fine",
-    delayClass: "reveal-delay-1",
-    avClass: "av2"
-  },
-  {
-    quote: "Working with Vrew Kriya felt like collaborating with artists who happened to understand business. Our digital presence transformed entirely in one engagement.",
-    authorPrefix: "S",
-    name: "Sana Qureshi",
-    brand: "CEO, Nīlam Co.",
-    delayClass: "reveal-delay-2",
-    avClass: "av3"
-  }
-];
+﻿export interface TestimonialItem {
+  _id: string;
+  quote: string;
+  name: string;
+  brand?: string;
+  order?: number;
+}
 
-export default function Testimonials() {
+export default function Testimonials({
+  testimonialsData,
+}: {
+  readonly testimonialsData: readonly TestimonialItem[];
+}) {
   return (
     <section id="testimonials">
       <div className="testimonials-inner">
@@ -41,18 +26,23 @@ export default function Testimonials() {
         </div>
 
         <div className="testi-grid">
-          {testimonialsData.map((testi) => (
-            <div key={testi.name} className={`testi-card reveal ${testi.delayClass}`}>
-              <p className="testi-text">&quot;{testi.quote}&quot;</p>
-              <div className="testi-author">
-                <div className={`testi-avatar ${testi.avClass}`}>{testi.authorPrefix}</div>
-                <div>
-                  <div className="testi-name">{testi.name}</div>
-                  <div className="testi-brand">{testi.brand}</div>
+          {testimonialsData.map((testi, i) => {
+            const authorPrefix = testi.name ? testi.name.charAt(0).toUpperCase() : "";
+            const delayClass = i === 0 ? "" : `reveal-delay-${i}`;
+            const avClass = `av${(i % 3) + 1}`;
+            return (
+              <div key={testi._id} className={`testi-card reveal ${delayClass}`}>
+                <p className="testi-text">&quot;{testi.quote}&quot;</p>
+                <div className="testi-author">
+                  <div className={`testi-avatar ${avClass}`}>{authorPrefix}</div>
+                  <div>
+                    <div className="testi-name">{testi.name}</div>
+                    <div className="testi-brand">{testi.brand}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
