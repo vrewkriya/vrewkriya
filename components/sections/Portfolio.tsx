@@ -86,6 +86,7 @@ export default function Portfolio() {
       </div>
 
       <div className="portfolio-scroll" ref={scrollRef}>
+        {(activeFilter === "All" || activeFilter === "Campaigns") && (
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-1 port-gem-placeholder">
             <svg aria-hidden="true" width="120" height="120" viewBox="0 0 120 120" fill="none">
@@ -131,6 +132,8 @@ export default function Portfolio() {
             </div>
           </div>
         </div>
+        )}
+        {(activeFilter === "All" || activeFilter === "Shoots") && (
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-2 port-gem-placeholder">
             <svg width="80" height="100" viewBox="0 0 80 100" fill="none">
@@ -179,6 +182,8 @@ export default function Portfolio() {
             </div>
           </div>
         </div>
+        )}
+        {(activeFilter === "All" || activeFilter === "Shoots") && (
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-3 port-gem-placeholder">
             <svg aria-hidden="true" width="80" height="100" viewBox="0 0 80 100" fill="none">
@@ -223,6 +228,8 @@ export default function Portfolio() {
             </div>
           </div>
         </div>
+        )}
+        {(activeFilter === "All" || activeFilter === "Campaigns") && (
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-4 port-gem-placeholder">
             <svg aria-hidden="true" width="100" height="100" viewBox="0 0 100 100" fill="none">
@@ -267,6 +274,8 @@ export default function Portfolio() {
             </div>
           </div>
         </div>
+        )}
+        {(activeFilter === "All" || activeFilter === "Digital") && (
         <div className="portfolio-item">
           <div className="portfolio-img port-bg-5 port-gem-placeholder">
             <svg aria-hidden="true" width="100" height="80" viewBox="0 0 100 80" fill="none">
@@ -311,6 +320,7 @@ export default function Portfolio() {
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   );
