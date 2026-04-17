@@ -3,6 +3,7 @@ import { cormorant, jost } from "./fonts";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import CustomCursor from "@/components/ui/CustomCursor";
+import ClientReveal from "@/components/ui/ClientReveal";
 
 export const metadata: Metadata = {
   title: "Vrew Kriya — Luxury Jewelry Marketing Studio",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
     siteName: "Vrew Kriya",
     type: "website",
   },
+  metadataBase: new URL('https://vrewkriya.com'),
 };
 
 export default function RootLayout({
@@ -36,6 +38,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LenisProvider>
+          <ClientReveal />
           <CustomCursor />
           {children}
         </LenisProvider>

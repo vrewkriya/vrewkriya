@@ -1,22 +1,37 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens ─── */
-:root {
-  --bg:        #0a0a0d;
-  --bg2:       #0e0d12;
-  --bg3:       #12111a;
-  --gold:      #c9a96e;
-  --gold-dim:  #8a6e42;
-  --sapphire:  #1a2240;
-  --emerald:   #0f2318;
-  --burgundy:  #2a0e14;
-  --cream:     #f0e8d8;
-  --cream-dim: #a09080;
-  --white:     #ffffff;
-  --line:      rgba(201,169,110,0.18);
+@theme {
+  --color-bg:        #0a0a0d;
+  --color-bg2:       #0e0d12;
+  --color-bg3:       #12111a;
+  --color-gold:      #c9a96e;
+  --color-gold-dim:  #8a6e42;
+  --color-sapphire:  #1a2240;
+  --color-emerald:   #0f2318;
+  --color-burgundy:  #2a0e14;
+  --color-cream:     #f0e8d8;
+  --color-cream-dim: #a09080;
+  --color-white:     #ffffff;
+  --color-line:      rgba(201,169,110,0.18);
 }
 
-html { scroll-behavior: smooth; }
+/* ─── Design Tokens (Backwards Compatibility) ─── */
+:root {
+  --bg:        var(--color-bg);
+  --bg2:       var(--color-bg2);
+  --bg3:       var(--color-bg3);
+  --gold:      var(--color-gold);
+  --gold-dim:  var(--color-gold-dim);
+  --sapphire:  var(--color-sapphire);
+  --emerald:   var(--color-emerald);
+  --burgundy:  var(--color-burgundy);
+  --cream:     var(--color-cream);
+  --cream-dim: var(--color-cream-dim);
+  --white:     var(--color-white);
+  --line:      var(--color-line);
+}
+
+/* Removed scroll-behavior: smooth; as it severely conflicts with Lenis and causes scrolling to get stuck */
 
 body {
   background: var(--bg);
@@ -46,7 +61,17 @@ body {
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
-  transition: all 0.25s ease;
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+}
+
+.cursor.hovered {
+  opacity: 0;
+}
+
+.cursor-ring.hovered {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(201,169,110,0.8);
 }
 
 /* NAV */

@@ -39,10 +39,8 @@ export default function CustomCursor() {
       const target = e.target as Element
       const interactiveEl = target.closest('a, button, .portfolio-item, .service-card, .client-logo, input, textarea, select')
       if (interactiveEl) {
-        ring.style.width = '56px'
-        ring.style.height = '56px'
-        ring.style.borderColor = 'rgba(201,169,110,0.8)'
-        cursor.style.opacity = '0'
+        ring.classList.add('hovered')
+        cursor.classList.add('hovered')
       }
     }
 
@@ -50,33 +48,19 @@ export default function CustomCursor() {
       const target = e.target as Element
       const interactiveEl = target.closest('a, button, .portfolio-item, .service-card, .client-logo, input, textarea, select')
       if (interactiveEl) {
-        ring.style.width = '36px'
-        ring.style.height = '36px'
-        ring.style.borderColor = 'rgba(201,169,110,0.5)'
-        cursor.style.opacity = '1'
+        ring.classList.remove('hovered')
+        cursor.classList.remove('hovered')
       }
     }
 
     document.addEventListener('mouseover', handleMouseOver)
     document.addEventListener('mouseout', handleMouseOut)
 
-    // Intersection Observer for reveals
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
-
     return () => {
       cancelAnimationFrame(rafId)
       document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseover', handleMouseOver)
       document.removeEventListener('mouseout', handleMouseOut)
-      observer.disconnect()
     }
   }, [])
 

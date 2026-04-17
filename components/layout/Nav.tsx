@@ -1,21 +1,20 @@
 "use client";
 import { useActiveSection } from '@/lib/useActiveSection';
+import { useLenis } from '@studio-freight/react-lenis';
 
 export default function Nav() {
   const sections = ['services', 'portfolio', 'about', 'testimonials', 'contact'];
   const activeSection = useActiveSection(sections);
+  const lenis = useLenis();
 
-  // Smooth scroll handler (works great with Lenis)
+  // Smooth scroll handler using Lenis specifically
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
-    if (element) {
-      // You can just rely on native behavior which Lenis overrides, 
-      // or explicitly use globalThis.scrollTo
-      globalThis.scrollTo({
-        top: element.offsetTop,
-        behavior: 'smooth',
-      });
+    if (element && lenis) {
+      // Use lenis.scrollTo for perfectly synchronized buttery scrolling
+      lenis.scrollTo(element, { offset: -80 }); // Offset for the fixed nav
+      
       // Optionally update URL to preserve state
       globalThis.history.pushState({}, '', `#${id}`);
     }
