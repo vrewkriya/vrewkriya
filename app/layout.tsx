@@ -6,19 +6,19 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import ClientReveal from "@/components/ui/ClientReveal";
 
 export const metadata: Metadata = {
-  title: "Vrew Kriya — Luxury Jewelry Marketing Studio",
+  title: "Vrew Kriya — Luxury Jewellery Marketing Studio",
   description:
-    "A luxury visual studio crafting campaigns, shoots, and digital presence for jewelry brands that deserve to be felt.",
+    "A luxury visual studio crafting campaigns, shoots, and digital presence for jewellery brands that deserve to be felt.",
   keywords: [
-    "jewelry marketing",
+    "jewellery marketing",
     "luxury shoots",
-    "jewelry campaigns",
-    "jewelry branding",
-    "Mumbai",
+    "jewellery campaigns",
+    "jewellery branding",
+    "Bengaluru",
   ],
   openGraph: {
     title: "Vrew Kriya",
-    description: "Where jewelry brands find their light.",
+    description: "Where jewellery brands find their light.",
     url: "https://vrewkriya.com",
     siteName: "Vrew Kriya",
     type: "website",

@@ -174,7 +174,7 @@ export default function About() {
           in <em>Light & Shadow</em>
         </h2>
         <p className="about-text reveal reveal-delay-2">
-          Vrew Kriya was born from a singular conviction — that jewelry is not
+          VrewKriya was born from a singular conviction  that jewellery is not
           just adornment, it is memory, lineage, and identity. Brands that carry
           this weight deserve a visual partner who understands it.
         </p>

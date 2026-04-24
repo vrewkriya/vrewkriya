@@ -281,15 +281,15 @@ export default function Hero() {
       </div>
 
       <div className="hero-content">
-        <p className="hero-eyebrow">Est. 2024 &nbsp;·&nbsp; Mumbai</p>
+        <p className="hero-eyebrow">Est. 2025&nbsp;·&nbsp; Bengaluru</p>
         <h1 className="hero-title">
-          Where Jewelry
+          Where Jewellery
           <br />
           <em>Meets</em> Light
         </h1>
         <p className="hero-sub">
           A luxury visual studio crafting campaigns, shoots, and digital
-          presence for jewelry brands that deserve to be felt.
+          presence for jewellery brands that deserve to be felt.
         </p>
         <div className="hero-btns">
           <Link href="#portfolio" className="btn-primary">

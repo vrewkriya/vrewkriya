@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="footer-top">
         <div>
           <div className="footer-logo">Vrew <span>Kriya</span></div>
-          <div className="footer-tagline">Where jewelry brands find their light.</div>
+          <div className="footer-tagline">Where jewellery brands find their light.</div>
         </div>
         <div className="footer-links">
           <Link href="#services" className="footer-link">Services</Link>
