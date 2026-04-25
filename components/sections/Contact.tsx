@@ -1,18 +1,12 @@
 ﻿"use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { serviceCategoryTitles } from "@/lib/data/services";
 
 export default function Contact() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const SERVICES = [
-    "Luxury Shoot Production",
-    "Campaign Strategy",
-    "Digital Brand Presence",
-    "Full Partnership"
-  ];
 
   const toggleService = (service: string) => {
     setSelectedServices((prev) =>
@@ -82,7 +76,7 @@ export default function Contact() {
           />
         </div>
         <div className="form-field reveal reveal-delay-2" ref={dropdownRef} style={{ position: "relative", zIndex: 100 }}>
-          <label htmlFor="service-interested-display" id="service-int-label">Service Interested In</label>
+          <label htmlFor="service-interested-display" id="service-int-label">Services You Need</label>
           <div className={`custom-select-wrapper ${isDropdownOpen ? 'open' : ''}`}>
             <button 
               type="button"
@@ -97,13 +91,13 @@ export default function Contact() {
                   {selectedServices.join(", ")}
                 </span>
               ) : (
-                <span className="custom-select-placeholder">Select one or more services</span>
+                <span className="custom-select-placeholder">Select one or more service categories</span>
               )}
             </button>
             
             {isDropdownOpen && (
               <div className="custom-select-dropdown">
-                {SERVICES.map((service) => {
+                {serviceCategoryTitles.map((service) => {
                   const isSelected = selectedServices.includes(service);
                   return (
                     <button

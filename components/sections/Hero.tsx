@@ -21,11 +21,11 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="hero">
+    <section id="hero" style={{ position: "relative" }}>
       <div className="hero-bg"></div>
 
       {/* Floating Gem */}
-      <div className="hero-gem">
+      <div className="hero-gem" style={{ pointerEvents: "none" }}>
         <svg
           aria-hidden="true"
           viewBox="0 0 520 520"
@@ -280,7 +280,7 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="hero-content">
+      <div className="hero-content" style={{ zIndex: 10, pointerEvents: "auto" }}>
         <p className="hero-eyebrow">Est. 2025&nbsp;·&nbsp; Bengaluru</p>
         <h1 className="hero-title">
           Where Jewellery
@@ -291,11 +291,11 @@ export default function Hero() {
           A luxury visual studio crafting campaigns, shoots, and digital
           presence for jewellery brands that deserve to be felt.
         </p>
-        <div className="hero-btns">
-          <Link href="#portfolio" className="btn-primary">
+        <div className="hero-btns" style={{ pointerEvents: "auto" }}>
+          <Link href="/#portfolio" className="btn-primary">
             Explore Work
           </Link>
-          <Link href="#services" className="btn-ghost">
+          <Link href="/#services" className="btn-ghost">
             Our Services
           </Link>
         </div>
