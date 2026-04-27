@@ -102,6 +102,11 @@
   padding: 72px 48px;
   background: var(--bg2, #0e0d12);
   border-left: 1px solid var(--line, rgba(201, 169, 110, 0.15));
+  position: sticky;
+  top: 40px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  align-self: start;
 }
 
 .detail-lead {

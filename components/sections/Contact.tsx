@@ -1,10 +1,27 @@
 ﻿"use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { serviceCategoryTitles } from "@/lib/data/services";
 
-export default function Contact() {
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const initialCompany = searchParams.get("company") || "";
+  
+  // URL may pass slugs instead of full titles, but let's see. 
+  // ServicesCards passes slugs like "creative-production".
+  // We need to map them to `serviceCategoryTitles` or just pre-fill.
+  const servicesParam = searchParams.get("services");
+  
+  const initialServices = servicesParam 
+    ? servicesParam.split(",").map(slug => {
+        // Simple mapping: "creative-production" -> "Creative Production"
+        return slug.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+      }).filter(title => serviceCategoryTitles.includes(title))
+    : [];
+
+  const [selectedServices, setSelectedServices] = useState<string[]>(initialServices);
+  const [companyName, setCompanyName] = useState(initialCompany);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -15,6 +32,16 @@ export default function Contact() {
         : [...prev, service]
     );
   };
+
+  useEffect(() => {
+    // If the services param exists and the component mounted, gently scroll into view 
+    // to guarantee we land on the contact form after the redirect from the deckbuilder
+    if (servicesParam) {
+      setTimeout(() => {
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  }, [servicesParam]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,7 +91,13 @@ export default function Contact() {
           </div>
           <div className="form-field reveal reveal-delay-1">
             <label htmlFor="brand-company">Brand / Company</label>
-            <input id="brand-company" type="text" placeholder="Your Brand or Company" />
+            <input 
+              id="brand-company" 
+              type="text" 
+              placeholder="Your Brand or Company" 
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+            />
           </div>
         </div>
         <div className="form-field reveal reveal-delay-1">
@@ -132,5 +165,19 @@ export default function Contact() {
         </button>
       </div>
     </section>
+  );
+}
+
+export default function Contact() {
+  return (
+    <Suspense fallback={
+      <section id="contact">
+        <div style={{ padding: "10rem", textAlign: "center", color: "#c9a84c" }}>
+          Loading Form...
+        </div>
+      </section>
+    }>
+      <ContactForm />
+    </Suspense>
   );
 }
