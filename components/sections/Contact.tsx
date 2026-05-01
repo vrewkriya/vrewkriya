@@ -1,28 +1,34 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { serviceCategoryTitles } from "@/lib/data/services";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function ContactForm() {
   const searchParams = useSearchParams();
   const initialCompany = searchParams.get("company") || "";
   
-  // URL may pass slugs instead of full titles, but let's see. 
-  // ServicesCards passes slugs like "creative-production".
-  // We need to map them to `serviceCategoryTitles` or just pre-fill.
   const servicesParam = searchParams.get("services");
   
   const initialServices = servicesParam 
     ? servicesParam.split(",").map(slug => {
-        // Simple mapping: "creative-production" -> "Creative Production"
         return slug.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
       }).filter(title => serviceCategoryTitles.includes(title))
     : [];
 
   const [selectedServices, setSelectedServices] = useState<string[]>(initialServices);
   const [companyName, setCompanyName] = useState(initialCompany);
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleService = (service: string) => {
@@ -34,8 +40,6 @@ function ContactForm() {
   };
 
   useEffect(() => {
-    // If the services param exists and the component mounted, gently scroll into view 
-    // to guarantee we land on the contact form after the redirect from the deckbuilder
     if (servicesParam) {
       setTimeout(() => {
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
@@ -52,6 +56,59 @@ function ContactForm() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError("");
+    setSubmitSuccess(false);
+
+    if (selectedServices.length === 0) {
+      setSubmitError("Please select at least one service.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!recaptchaToken && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+      setSubmitError("Please complete the reCAPTCHA verification.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          brand: companyName,
+          email,
+          service: selectedServices.join(", "),
+          message,
+          recaptchaToken,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send inquiry");
+      }
+
+      setSubmitSuccess(true);
+      setFirstName("");
+      setCompanyName("");
+      setEmail("");
+      setSelectedServices([]);
+      setMessage("");
+    } catch (error: any) {
+      setSubmitError(error?.message || "An unexpected error occurred");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact">
@@ -74,20 +131,28 @@ function ContactForm() {
           </div>
           <div className="contact-detail-item">
             <span className="detail-label">Studio</span>
-            <span className="detail-value">Bengaluru, Karnataka — India</span>
+            <span className="detail-value">Bengaluru, Karnataka &mdash; India</span>
           </div>
           <div className="contact-detail-item">
             <span className="detail-label">Hours</span>
-            <span className="detail-value">Mon – Sat, 10am – 7pm IST</span>
+            <span className="detail-value">Mon &ndash; Sat, 10am &ndash; 7pm IST</span>
           </div>
         </div>
       </div>
 
-      <div className="contact-right">
+      <form className="contact-right" onSubmit={handleSubmit} suppressHydrationWarning>
         <div className="form-row">
           <div className="form-field reveal">
             <label htmlFor="first-name">First Name</label>
-            <input id="first-name" type="text" placeholder="Your Name" />
+            <input 
+              id="first-name" 
+              type="text" 
+              placeholder="Your Name" 
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              suppressHydrationWarning
+            />
           </div>
           <div className="form-field reveal reveal-delay-1">
             <label htmlFor="brand-company">Brand / Company</label>
@@ -97,6 +162,8 @@ function ContactForm() {
               placeholder="Your Brand or Company" 
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
+              required
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -106,6 +173,10 @@ function ContactForm() {
             id="email-address"
             type="email"
             placeholder="hello@yourbrand.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            suppressHydrationWarning
           />
         </div>
         <div className="form-field reveal reveal-delay-2" ref={dropdownRef} style={{ position: "relative", zIndex: 100 }}>
@@ -118,6 +189,7 @@ function ContactForm() {
               id="service-interested-display"
               aria-labelledby="service-int-label"
               aria-expanded={isDropdownOpen}
+              suppressHydrationWarning
             >
               {selectedServices.length > 0 ? (
                 <span className="custom-select-value">
@@ -150,20 +222,36 @@ function ContactForm() {
               </div>
             )}
           </div>
-          {/* Hidden input to pass selected services to form handler */}
           <input type="hidden" id="service-interested" name="service-interested" value={selectedServices.join(", ")} />
         </div>
         <div className="form-field reveal reveal-delay-3">
           <label htmlFor="brand-info">Tell Us About Your Brand</label>
           <textarea
             id="brand-info"
-            placeholder="Share your vision, your collection, your goals…"
+            placeholder="Share your vision, your collection, your goals."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
           ></textarea>
         </div>
-        <button className="form-submit reveal reveal-delay-4">
-          Book a Consultation
+        
+        {submitError && <div style={{ color: "red", marginTop: "1rem" }}>{submitError}</div>}
+        {submitSuccess && <div style={{ color: "green", marginTop: "1rem" }}>Thank you! Your message has been successfully sent.</div>}
+
+        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+          <div style={{ marginTop: "1.5rem", marginBottom: "1rem" }} className="reveal reveal-delay-3">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={(token) => setRecaptchaToken(token)}
+              theme="dark"
+            />
+          </div>
+        )}
+
+        <button type="submit" disabled={isSubmitting} className="form-submit reveal reveal-delay-4">
+          {isSubmitting ? "Sending..." : "Book a Consultation"}
         </button>
-      </div>
+      </form>
     </section>
   );
 }

@@ -79,6 +79,7 @@ export default function Portfolio({
             >
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={() => setActiveFilter(filter)}
                 style={{
                   background: "none",

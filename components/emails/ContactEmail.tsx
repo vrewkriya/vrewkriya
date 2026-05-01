@@ -158,7 +158,7 @@ export default function ContactEmail({
                 margin: "0",
               }}
             >
-              Vrew Kriya Studio — Bengaluru
+              Vrew Kriya Studio &mdash; Bengaluru
             </Text>
           </Section>
         </Container>
