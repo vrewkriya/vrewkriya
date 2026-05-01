@@ -20,14 +20,13 @@ export default async function ServiceDetailPage({
   const serviceIndex = serviceCategories.findIndex(
     (s) => s.slug === resolvedParams.slug
   );
-  
+
   if (serviceIndex === -1) {
     notFound();
   }
 
   const service = serviceCategories[serviceIndex];
-  const numObj = (serviceIndex + 1).toString().padStart(2, "0");
-  
+
   const bgMapping: Record<string, string> = {
     "creative-production": "linear-gradient(135deg,#1a2240 0%,#0a0a0d 100%)",
     "content-and-brand-strategy": "linear-gradient(135deg,#2a0e14 0%,#0a0a0d 100%)",
@@ -37,7 +36,7 @@ export default async function ServiceDetailPage({
   };
 
   const bgStyle = bgMapping[service.slug] || "linear-gradient(135deg,#1a2240 0%,#0a0a0d 100%)";
-  
+
   // Extracting first word and rest for styling purposes
   const firstSpaceIndex = service.title.indexOf(' ');
   const titleFirst = firstSpaceIndex === -1 ? service.title : service.title.substring(0, firstSpaceIndex);
@@ -48,8 +47,8 @@ export default async function ServiceDetailPage({
       <ScrollUpOnMount />
       <div id="page-detail">
         <div className="detail-hero" id="detailHero">
-          <div 
-            className="detail-hero-bg" 
+          <div
+            className="detail-hero-bg"
             id="detailHeroBg"
             style={{ background: bgStyle }}
           />
@@ -60,9 +59,6 @@ export default async function ServiceDetailPage({
               </Link>
               <span>/</span>
               <span id="detailBreadcrumb">{service.title}</span>
-            </div>
-            <div className="detail-num" id="detailNum">
-              {numObj}
             </div>
             <h1 className="detail-title" id="detailTitle">
               {titleFirst} {titleRest && <em>{titleRest}</em>}
@@ -84,33 +80,33 @@ export default async function ServiceDetailPage({
                 </li>
               ))}
             </ul>
-            
+
             {/* Keeping it true to design but substituting process blocks if not found */}
             <div className="detail-section-title" style={{ marginTop: "56px" }}>
               Our Approach
             </div>
             <div className="process-steps" id="detailProcess">
-               <div className="process-step">
-                  <div className="step-num">01</div>
-                  <div className="step-content">
-                    <h4>Discovery & Alignment</h4>
-                    <p>We deep-dive into your brand world, target audience, and campaign objectives before proceeding.</p>
-                  </div>
-               </div>
-               <div className="process-step">
-                  <div className="step-num">02</div>
-                  <div className="step-content">
-                    <h4>Concept & Execution</h4>
-                    <p>Meticulous planning and execution tailored exclusively for jewelry to ensure perfection.</p>
-                  </div>
-               </div>
-               <div className="process-step">
-                  <div className="step-num">03</div>
-                  <div className="step-content">
-                    <h4>Review & Delivery</h4>
-                    <p>Curated selections and high-quality finishing, delivering platform-optimised assets.</p>
-                  </div>
-               </div>
+              <div className="process-step">
+                <div className="step-num">01</div>
+                <div className="step-content">
+                  <h4>Discovery & Alignment</h4>
+                  <p>We deep-dive into your brand world, target audience, and campaign objectives before proceeding.</p>
+                </div>
+              </div>
+              <div className="process-step">
+                <div className="step-num">02</div>
+                <div className="step-content">
+                  <h4>Concept & Execution</h4>
+                  <p>Meticulous planning and execution tailored exclusively for jewelry to ensure perfection.</p>
+                </div>
+              </div>
+              <div className="process-step">
+                <div className="step-num">03</div>
+                <div className="step-content">
+                  <h4>Review & Delivery</h4>
+                  <p>Curated selections and high-quality finishing, delivering platform-optimised assets.</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -130,13 +126,13 @@ export default async function ServiceDetailPage({
             <div className="sidebar-block">
               <div className="sidebar-label">Focus Areas</div>
               <div className="sidebar-tags" id="detailSidebarTags">
-                 <span className="sidebar-tag">Strategy</span>
-                 <span className="sidebar-tag">Production</span>
-                 <span className="sidebar-tag">Quality</span>
+                <span className="sidebar-tag">Strategy</span>
+                <span className="sidebar-tag">Production</span>
+                <span className="sidebar-tag">Quality</span>
               </div>
             </div>
             <div className="sidebar-block">
-              <Link href="/#contact" className="sidebar-cta">
+              <Link href={`/?service=${service.slug}#contact`} className="sidebar-cta">
                 Request a Proposal
               </Link>
             </div>

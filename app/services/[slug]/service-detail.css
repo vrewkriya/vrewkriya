@@ -27,11 +27,11 @@
 }
 
 .detail-breadcrumb {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -51,14 +51,6 @@
 
 .breadcrumb-back:hover {
   color: var(--cream);
-}
-
-.detail-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  color: var(--gold);
-  margin-bottom: 16px;
 }
 
 .detail-title {
@@ -86,40 +78,50 @@
   z-index: 1;
 }
 
-/* Detail body */
+/* Detail body — sidebar aligns to top for sticky behavior */
 .detail-body {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 380px;
   gap: 2px;
   padding: 2px 0;
+  align-items: start;
 }
 
 .detail-main {
   padding: 72px 64px;
 }
 
+/*Sticky Sidebar*/
 .detail-sidebar {
-  padding: 72px 48px;
+  position: sticky;
+  top: 80px;
+  /* Snug below the fixed nav */
+  padding: 36px 36px 32px;
   background: var(--bg2, #0e0d12);
   border-left: 1px solid var(--line, rgba(201, 169, 110, 0.15));
+  border-top: 1px solid var(--line, rgba(201, 169, 110, 0.15));
+  border-bottom: 1px solid var(--line, rgba(201, 169, 110, 0.15));
+  /* No max-height or overflow — content is compact enough to fit viewport */
 }
 
+/*  Lead Paragraph  */
 .detail-lead {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.45rem;
+  font-size: 1.65rem;
   font-weight: 300;
   line-height: 1.65;
   color: var(--cream);
-  margin-bottom: 48px;
-  max-width: 640px;
+  margin-bottom: 56px;
+  max-width: 680px;
 }
 
+/*  Section Titles  */
 .detail-section-title {
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -127,7 +129,7 @@
 
 .detail-section-title::after {
   content: '';
-  width: 36px;
+  width: 40px;
   height: 1px;
   background: var(--gold-dim);
   opacity: 0.5;
@@ -144,9 +146,9 @@
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  padding: 20px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--line, rgba(201, 169, 110, 0.15));
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   line-height: 1.75;
   color: var(--cream-dim);
   transition: color 0.3s;
@@ -159,11 +161,11 @@
 .deliverables li::before {
   content: '';
   flex-shrink: 0;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--gold);
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 /* Process steps */
@@ -177,7 +179,7 @@
   display: grid;
   grid-template-columns: 80px 1fr;
   gap: 0;
-  padding: 32px 0;
+  padding: 36px 0;
   border-bottom: 1px solid var(--line, rgba(201, 169, 110, 0.15));
 }
 
@@ -191,23 +193,23 @@
 }
 
 .step-content h4 {
-  font-size: 0.88rem;
+  font-size: 1.1rem;
   font-weight: 400;
   color: var(--cream);
   letter-spacing: 0.06em;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .step-content p {
-  font-size: 0.78rem;
-  line-height: 1.8;
+  font-size: 1rem;
+  line-height: 1.85;
   color: var(--cream-dim);
 }
 
-/* Sidebar */
+/*  Sidebar  */
 .sidebar-block {
-  margin-bottom: 48px;
-  padding-bottom: 48px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--line, rgba(201, 169, 110, 0.15));
 }
 
@@ -218,15 +220,15 @@
 }
 
 .sidebar-label {
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .sidebar-value {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   color: var(--cream-dim);
   line-height: 1.8;
 }
@@ -234,30 +236,36 @@
 .sidebar-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sidebar-tag {
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--gold-dim);
   border: 1px solid var(--line, rgba(201, 169, 110, 0.15));
-  padding: 5px 12px;
+  padding: 7px 16px;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.sidebar-tag:hover {
+  color: var(--gold);
+  border-color: var(--gold-dim);
 }
 
 .sidebar-cta {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 500;
   background: var(--gold);
   color: var(--bg);
-  padding: 16px 28px;
+  padding: 14px 28px;
   text-align: center;
   text-decoration: none;
-  margin-top: 36px;
+  margin-top: 16px;
   cursor: none;
   transition: all 0.35s;
 }
@@ -269,14 +277,14 @@
 .sidebar-related {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
 }
 
 .related-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--line, rgba(201, 169, 110, 0.15));
   text-decoration: none;
   cursor: none;
@@ -288,7 +296,7 @@
 }
 
 .related-link-name {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: var(--cream-dim);
   transition: color 0.3s;
 }
@@ -298,27 +306,48 @@
 }
 
 .related-arrow {
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   color: var(--gold-dim);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Background Gradients Specific for services */
-.bg-creative-production {
-  background: linear-gradient(135deg, #1a2240 0%, #0a0a0d 100%);
+.related-link:hover .related-arrow {
+  transform: translateX(4px);
 }
 
-.bg-content-and-brand-strategy {
-  background: linear-gradient(135deg, #2a0e14 0%, #0a0a0d 100%);
+/*  Responsive  */
+@media (max-width: 1024px) {
+  .detail-body {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-sidebar {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    border-left: none;
+    border-top: 1px solid var(--line, rgba(201, 169, 110, 0.15));
+  }
 }
 
-.bg-post-production-and-delivery {
-  background: linear-gradient(135deg, #0f2318 0%, #0a0a0d 100%);
-}
+@media (max-width: 640px) {
+  .detail-hero-content {
+    padding: 0 24px 40px;
+  }
 
-.bg-performance-marketing {
-  background: linear-gradient(135deg, #1e1030 0%, #0a0a0d 100%);
-}
+  .detail-main {
+    padding: 48px 24px;
+  }
 
-.bg-social-media-management {
-  background: linear-gradient(135deg, #1e1208 0%, #0a0a0d 100%);
+  .detail-sidebar {
+    padding: 48px 24px;
+  }
+
+  .detail-lead {
+    font-size: 1.35rem;
+  }
+
+  .deliverables li {
+    font-size: 0.95rem;
+  }
 }

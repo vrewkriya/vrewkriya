@@ -17,6 +17,13 @@ export default function ClientReveal() {
   useEffect(() => {
     let observer: IntersectionObserver;
 
+    // Reset all reveal elements first so they can re-animate on route change.
+    // This prevents the "disappearing grid" bug when navigating back.
+    const allReveals = document.querySelectorAll('.reveal');
+    allReveals.forEach((el) => {
+      el.classList.remove('visible', 'in');
+    });
+
     // Adding slight setTimeout helps ensure the DOM has updated after routing
     const timer = setTimeout(() => {
       const reveals = document.querySelectorAll('.reveal');
