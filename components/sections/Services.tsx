@@ -290,14 +290,18 @@ export default function Services() {
 
       {/*  Header  */}
       <div className="services-header-v2">
-        <p className="section-label reveal">Services</p>
-        <h2 className="section-title services-title-v2 reveal reveal-delay-1">
-          What We <em>Do</em>
-        </h2>
-        <p className="services-subtitle reveal reveal-delay-2">
-          Meticulously crafted campaigns and digital experiences that command
-          attention for luxury jewellery brands.
-        </p>
+        <div className="services-header-left">
+          <p className="section-label reveal">What We Offer</p>
+          <h2 className="section-title services-title-v2 reveal reveal-delay-1" style={{ marginBottom: 0 }}>
+            Crafting Visual <br />
+            <em>Legacies</em>
+          </h2>
+        </div>
+        <div className="services-header-right">
+          <p className="services-subtitle reveal reveal-delay-2">
+            Every jewel has a story. We give it a stage, through meticulously crafted imagery, campaigns, and digital experiences that command attention in a crowded world.
+          </p>
+        </div>
       </div>
 
       {/*  3×2 Priority Grid  */}

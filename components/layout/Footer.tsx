@@ -1,12 +1,25 @@
-﻿"use client";
+"use client";
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function Footer() {
-  const currentDateTime = new Date().toLocaleString('en-IN', {
-    dateStyle: 'full',
-    timeStyle: 'medium',
-  });
+  const [timeStr, setTimeStr] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const formatter = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      setTimeStr(`BENGALURU, IN \u2014 ${formatter.format(new Date()).toUpperCase()}`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <footer>
@@ -27,14 +40,14 @@ export default function Footer() {
       <div className="footer-bottom">
         <div>
           <p className="footer-copy">© 2025 Vrew Kriya. All rights reserved.</p>
-          <p className="footer-copy" style={{ marginTop: '0.35rem', opacity: 0.8 }} suppressHydrationWarning>
-            {currentDateTime}
+          <p className="footer-time" suppressHydrationWarning>
+            {timeStr || 'BENGALURU, IN'}
           </p>
         </div>
         <div className="footer-social">
-          <a href="https://instagram.com/vrewkriya">Instagram</a>
-          <a href="https://behance.net/vrewkriya">Behance</a>
-          <a href="https://www.linkedin.com/in/vrewkriya-lab-4602683bb">LinkedIn</a>
+          <a href="https://instagram.com/vrewkriya" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://behance.net/vrewkriya" target="_blank" rel="noopener noreferrer">Behance</a>
+          <a href="https://www.linkedin.com/in/vrewkriya-lab-4602683bb" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
     </footer>

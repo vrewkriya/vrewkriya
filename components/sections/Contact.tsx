@@ -34,13 +34,24 @@ const contactSchema = z.object({
   brandCompany: z.string().min(1, "Brand / Company is required").max(100, "Brand / Company must be at most 100 characters"),
   email: z.string().min(1, "Email is required").regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address"),
   countryCode: z.string().min(1, "Select a country code"),
-  mobileNumber: z.string().min(7, "Enter a valid mobile number").max(20, "Mobile number is too long"),
+  mobileNumber: z.string()
+    .min(7, "Enter a valid mobile number")
+    .max(20, "Mobile number is too long")
+    .regex(/^\d+$/, "Mobile number must contain only digits"),
   services: z.array(z.string()).min(1, "Select at least one service"),
   brandInfo: z.string().min(1, "Tell us about your brand").refine((val) => {
     return val.trim().split(/\s+/).length <= 500;
   }, {
     message: "Message must be at most 500 words",
   }),
+}).superRefine((data, ctx) => {
+  if (data.countryCode === "+91" && data.mobileNumber.length !== 10) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Indian mobile numbers must be exactly 10 digits",
+      path: ["mobileNumber"],
+    });
+  }
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -231,10 +242,24 @@ export default function Contact() {
               <input
                 id="mobileNumber"
                 type="tel"
-                inputMode="tel"
+                inputMode="numeric"
                 placeholder="Enter mobile number"
                 className={errors.mobileNumber ? "input-error" : ""}
-                {...register("mobileNumber")}
+                {...(() => {
+                  const { onChange, ...rest } = register("mobileNumber");
+                  return {
+                    ...rest,
+                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                      // Remove any non-digit characters
+                      e.target.value = e.target.value.replace(/\D/g, "");
+                      // Restrict to 10 digits if country code is India (+91)
+                      if (watch("countryCode") === "+91" && e.target.value.length > 10) {
+                        e.target.value = e.target.value.slice(0, 10);
+                      }
+                      onChange(e);
+                    }
+                  };
+                })()}
               />
             </div>
             {(errors.countryCode || errors.mobileNumber) && (

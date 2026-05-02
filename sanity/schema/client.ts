@@ -22,6 +22,18 @@ export const clientSchema = {
       title: 'Order (optional for sorting)',
       type: 'number',
     },
+    {
+      name: 'width',
+      title: 'Image Width (px)',
+      type: 'number',
+      description: 'Optional custom width for the client logo (default is 180)',
+    },
+    {
+      name: 'height',
+      title: 'Image Height (px)',
+      type: 'number',
+      description: 'Optional custom height for the client logo (default is 180)',
+    },
   ],
   preview: {
     select: {

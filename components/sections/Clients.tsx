@@ -5,68 +5,57 @@ import { client } from "@/sanity/lib/client";
 export interface ClientItem {
   _id: string;
   name: string;
-  logo?: unknown;
+  logo?: any;
   subtitle?: string;
   order?: number;
+  width?: number;
+  height?: number;
 }
-
-const fallbackClients: ClientItem[] = [
-  { _id: "navrathan-and-sons", name: "Navrathan & Sons", subtitle: "Exceptional & Exclusive" },
-  { _id: "pakwan-bangalore", name: "Pakwan", subtitle: "Heritage Jewellery" },
-  { _id: "sovan-jewellers", name: "Sovan Jewellers", subtitle: "Crafted with Tradition" },
-];
 
 export default async function Clients() {
   let cmsClients: ClientItem[] = [];
+
   try {
-    cmsClients = (await client.fetch(`*[_type == "client"] | order(order asc){_id, name, logo, subtitle, order}`)) as ClientItem[];
+    const data: ClientItem[] = await client.fetch(`*[_type == "client"] | order(order asc){_id, name, logo, subtitle, order, width, height}`);
+    cmsClients = data || [];
   } catch (e) {
-    cmsClients = fallbackClients;
+    console.error("Failed to fetch clients from Sanity", e);
   }
 
-  const displayClients = cmsClients && cmsClients.length > 0 ? cmsClients : fallbackClients;
+  const displayClients = cmsClients.filter(c => c.logo);
+
+  if (displayClients.length === 0) {
+    return null;
+  }
 
   return (
     <section id="clients">
-      <div className="tb-header">
-        <div className="tb-line"></div>
-        <div className="tb-diamond"></div>
-        <p className="tb-title">Trusted By</p>
-        <div className="tb-diamond"></div>
-        <div className="tb-line right"></div>
+      <div className="clients-header">
+        <p className="section-label reveal justify-center">Trusted By</p>
       </div>
 
-      <div className="tb-grid">
-        {displayClients.map((c) => (
-          <div key={c._id} className="tb-logo-card-only">
-            {c.logo ? (
-              <div className="tb-logo-image-large">
-                <Image
-                  src={(urlForImage((c.logo as unknown) as any)?.url() as string) || ""}
-                  alt={c.name}
-                  width={180}
-                  height={180}
-                  quality={90}
-                  loading="eager"
-                  priority
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-            ) : (
-              <div className="tb-logo-card-only--initials">
-                <div className="tb-logo-icon-initial">{c.name.charAt(0).toUpperCase()}</div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      <div className="clients-grid">
+        {displayClients.map((c) => {
+          const imgWidth = c.width || 180;
+          const imgHeight = c.height || 180;
+          const imageUrl = urlForImage(c.logo)?.url();
 
-      <div className="tb-bottom-accent">
-        <div className="tb-dot"></div>
-        <div className="tb-dot"></div>
-        <span className="tb-count">{displayClients.length}+ Trusted Partners</span>
-        <div className="tb-dot"></div>
-        <div className="tb-dot"></div>
+          if (!imageUrl) return null;
+
+          return (
+            <div key={c._id} className="client-logo-card" style={{ width: imgWidth, height: imgHeight, position: 'relative' }}>
+              <Image
+                src={imageUrl}
+                alt={c.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 200px"
+                quality={90}
+                priority
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          );
+        })}
       </div>
     </section>
   );
