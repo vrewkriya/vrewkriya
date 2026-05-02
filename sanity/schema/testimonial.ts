@@ -25,6 +25,14 @@ export const testimonialSchema = {
       title: 'Display Order',
       type: 'number',
     },
+    {
+      name: 'authorProfilePic',
+      title: 'Author Profile Picture',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
   ],
   preview: {
     select: {

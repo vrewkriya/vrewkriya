@@ -9,14 +9,14 @@ export default function Nav() {
 
   // Smooth scroll handler using Lenis specifically
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
     const element = document.getElementById(id);
     if (element && lenis) {
+      e.preventDefault();
       // Use lenis.scrollTo for perfectly synchronized buttery scrolling
       lenis.scrollTo(element, { offset: -80 }); // Offset for the fixed nav
       
       // Optionally update URL to preserve state
-      globalThis.history.pushState({}, '', `#${id}`);
+      globalThis.history.pushState({}, '', `/#${id}`);
     }
   };
 
@@ -26,7 +26,7 @@ export default function Nav() {
       <ul className="nav-links">
         <li>
           <a
-            href="#services"
+            href="/#services"
             onClick={(e) => handleScroll(e, 'services')}
             className={activeSection === 'services' ? 'active text-primary' : ''}
           >
@@ -35,7 +35,7 @@ export default function Nav() {
         </li>
         <li>
           <a
-            href="#portfolio"
+            href="/#portfolio"
             onClick={(e) => handleScroll(e, 'portfolio')}
             className={activeSection === 'portfolio' ? 'active text-primary' : ''}
           >
@@ -44,7 +44,7 @@ export default function Nav() {
         </li>
         <li>
           <a
-            href="#about"
+            href="/#about"
             onClick={(e) => handleScroll(e, 'about')}
             className={activeSection === 'about' ? 'active text-primary' : ''}
           >
@@ -53,7 +53,7 @@ export default function Nav() {
         </li>
         <li>
           <a
-            href="#testimonials"
+            href="/#testimonials"
             onClick={(e) => handleScroll(e, 'testimonials')}
             className={activeSection === 'testimonials' ? 'active text-primary' : ''}
           >
@@ -62,7 +62,7 @@ export default function Nav() {
         </li>
       </ul>
       <a 
-        href="#contact" 
+        href="/#contact" 
         onClick={(e) => handleScroll(e, 'contact')}
         className={`nav-cta ${activeSection === 'contact' ? 'active' : ''}`}
       >

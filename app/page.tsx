@@ -1,9 +1,8 @@
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import Services  from "@/components/sections/Services";
+import Services from "@/components/sections/Services";
 import Portfolio, { PortfolioItem } from "@/components/sections/Portfolio";
-import Clients from "@/components/sections/Clients";
 import About from "@/components/sections/About";
 import Testimonials, { TestimonialItem } from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
@@ -34,7 +33,6 @@ export default async function Home() {
       <Hero />
       <Services />
       <Portfolio portfolioData={portfolioData} />
-      <Clients />
       <About />
       <Testimonials testimonialsData={testimonialsData} />
       <Contact />

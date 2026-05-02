@@ -1,9 +1,13 @@
-﻿export interface TestimonialItem {
+﻿import Image from "next/image";
+import { urlForImage } from "@/sanity/lib/image";
+
+export interface TestimonialItem {
   _id: string;
   quote: string;
   name: string;
   brand?: string;
   order?: number;
+  authorProfilePic?: any;
 }
 
 export default function Testimonials({
@@ -34,7 +38,18 @@ export default function Testimonials({
               <div key={testi._id} className={`testi-card reveal ${delayClass}`}>
                 <p className="testi-text">&quot;{testi.quote}&quot;</p>
                 <div className="testi-author">
-                  <div className={`testi-avatar ${avClass}`}>{authorPrefix}</div>
+                  {testi.authorProfilePic ? (
+                    <div className={`testi-avatar`} style={{ position: 'relative', overflow: 'hidden' }}>
+                      <Image
+                        src={urlForImage(testi.authorProfilePic)?.url() || ""}
+                        alt={testi.name}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  ) : (
+                    <div className={`testi-avatar ${avClass}`}>{authorPrefix}</div>
+                  )}
                   <div>
                     <div className="testi-name">{testi.name}</div>
                     <div className="testi-brand">{testi.brand}</div>

@@ -21,6 +21,8 @@ export default function Footer() {
     return () => clearInterval(interval);
   }, []);
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer>
       <div className="footer-top">
@@ -29,17 +31,17 @@ export default function Footer() {
           <div className="footer-tagline">View the Vision. Kriya is the Action.</div>
         </div>
         <div className="footer-links">
-          <Link href="#services" className="footer-link">Services</Link>
-          <Link href="#portfolio" className="footer-link">Portfolio</Link>
-          <Link href="#about" className="footer-link">Studio</Link>
-          <Link href="#clients" className="footer-link">Clients</Link>
-          <Link href="#testimonials" className="footer-link">Testimonials</Link>
-          <Link href="#contact" className="footer-link">Contact</Link>
+          <Link href="/#services" className="footer-link">Services</Link>
+          <Link href="/#portfolio" className="footer-link">Portfolio</Link>
+          <Link href="/#about" className="footer-link">Studio</Link>
+          <Link href="/#testimonials" className="footer-link">Clients</Link>
+          <Link href="/#testimonials" className="footer-link">Testimonials</Link>
+          <Link href="/#contact" className="footer-link">Contact</Link>
         </div>
       </div>
       <div className="footer-bottom">
         <div>
-          <p className="footer-copy">© 2025 Vrew Kriya. All rights reserved.</p>
+          <p className="footer-copy">© {currentYear} Vrew Kriya. All rights reserved.</p>
           <p className="footer-time" suppressHydrationWarning>
             {timeStr || 'BENGALURU, IN'}
           </p>
