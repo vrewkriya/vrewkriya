@@ -1,12 +1,19 @@
-﻿import Link from 'next/link';
+﻿"use client";
+
+import Link from 'next/link';
 
 export default function Footer() {
+  const currentDateTime = new Date().toLocaleString('en-IN', {
+    dateStyle: 'full',
+    timeStyle: 'medium',
+  });
+
   return (
     <footer>
       <div className="footer-top">
         <div>
           <div className="footer-logo">Vrew <span>Kriya</span></div>
-          <div className="footer-tagline">Where jewellery brands find their light.</div>
+          <div className="footer-tagline">View the Vision. Kriya is the Action.</div>
         </div>
         <div className="footer-links">
           <Link href="#services" className="footer-link">Services</Link>
@@ -18,11 +25,16 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p className="footer-copy">© 2025 Vrew Kriya. All rights reserved.</p>
+        <div>
+          <p className="footer-copy">© 2025 Vrew Kriya. All rights reserved.</p>
+          <p className="footer-copy" style={{ marginTop: '0.35rem', opacity: 0.8 }} suppressHydrationWarning>
+            {currentDateTime}
+          </p>
+        </div>
         <div className="footer-social">
           <a href="https://instagram.com/vrewkriya">Instagram</a>
           <a href="https://behance.net/vrewkriya">Behance</a>
-          <a href="https://linkedin.com/company/vrewkriya">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/vrewkriya-lab-4602683bb">LinkedIn</a>
         </div>
       </div>
     </footer>

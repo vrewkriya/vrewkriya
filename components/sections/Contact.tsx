@@ -6,10 +6,35 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+const countryCodeOptions = [
+  { label: "India (+91)", value: "+91" },
+  { label: "United States (+1)", value: "+1" },
+  { label: "United Kingdom (+44)", value: "+44" },
+  { label: "United Arab Emirates (+971)", value: "+971" },
+  { label: "Singapore (+65)", value: "+65" },
+  { label: "Canada (+1)", value: "+1" },
+  { label: "Australia (+61)", value: "+61" },
+  { label: "Saudi Arabia (+966)", value: "+966" },
+  { label: "Qatar (+974)", value: "+974" },
+  { label: "Malaysia (+60)", value: "+60" },
+  { label: "Sri Lanka (+94)", value: "+94" },
+  { label: "Bangladesh (+880)", value: "+880" },
+  { label: "Pakistan (+92)", value: "+92" },
+  { label: "Nepal (+977)", value: "+977" },
+  { label: "South Africa (+27)", value: "+27" },
+  { label: "Kenya (+254)", value: "+254" },
+  { label: "Germany (+49)", value: "+49" },
+  { label: "France (+33)", value: "+33" },
+  { label: "Italy (+39)", value: "+39" },
+  { label: "UAE (+971)", value: "+971" },
+];
+
 const contactSchema = z.object({
   firstName: z.string().min(1, "First Name is required").max(50, "First Name must be at most 50 characters"),
   brandCompany: z.string().min(1, "Brand / Company is required").max(100, "Brand / Company must be at most 100 characters"),
   email: z.string().min(1, "Email is required").regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address"),
+  countryCode: z.string().min(1, "Select a country code"),
+  mobileNumber: z.string().min(7, "Enter a valid mobile number").max(20, "Mobile number is too long"),
   services: z.array(z.string()).min(1, "Select at least one service"),
   brandInfo: z.string().min(1, "Tell us about your brand").refine((val) => {
     return val.trim().split(/\s+/).length <= 500;
@@ -34,6 +59,8 @@ export default function Contact() {
       firstName: "",
       brandCompany: "",
       email: "",
+      countryCode: "+91",
+      mobileNumber: "",
       services: [],
       brandInfo: "",
     },
@@ -41,6 +68,8 @@ export default function Contact() {
 
   const selectedServices = watch("services");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleService = (service: string) => {
@@ -81,10 +110,39 @@ export default function Contact() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: ContactFormData) => {
-    // Implement standard submission logic here
-    console.log("Form submitted successfully:", data);
-    alert("Thank you! We will get in touch shortly.");
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: data.firstName,
+          brand: data.brandCompany,
+          email: data.email,
+          countryCode: data.countryCode,
+          mobileNumber: data.mobileNumber,
+          service: data.services.join(', '),
+          message: data.brandInfo,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setSubmitStatus({ type: 'error', message: result.error || 'Failed to submit form' });
+        return;
+      }
+
+      setSubmitStatus({ type: 'success', message: 'Thank you! We will get in touch shortly.' });
+    } catch (error) {
+      setSubmitStatus({ type: 'error', message: 'An error occurred. Please try again.' });
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -156,6 +214,35 @@ export default function Contact() {
             />
             {errors.email && <span className="form-error">{errors.email.message}</span>}
           </div>
+          <div className="form-field reveal reveal-delay-1">
+            <label htmlFor="mobileNumber">Mobile Number</label>
+            <div className="phone-input-row">
+              <select
+                id="countryCode"
+                className={`country-code-select ${errors.countryCode ? "input-error" : ""}`}
+                {...register("countryCode")}
+              >
+                {countryCodeOptions.map((option) => (
+                  <option key={option.value + option.label} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                id="mobileNumber"
+                type="tel"
+                inputMode="tel"
+                placeholder="Enter mobile number"
+                className={errors.mobileNumber ? "input-error" : ""}
+                {...register("mobileNumber")}
+              />
+            </div>
+            {(errors.countryCode || errors.mobileNumber) && (
+              <span className="form-error">
+                {errors.countryCode?.message || errors.mobileNumber?.message}
+              </span>
+            )}
+          </div>
           <div className="form-field reveal reveal-delay-2" ref={dropdownRef} style={{ position: "relative", zIndex: 100 }}>
             <label htmlFor="service-interested-display" id="service-int-label">Services You Need</label>
             <div className={`custom-select-wrapper ${isDropdownOpen ? 'open' : ''}`}>
@@ -226,8 +313,21 @@ export default function Contact() {
             ></textarea>
             {errors.brandInfo && <span className="form-error">{errors.brandInfo.message}</span>}
           </div>
-          <button type="submit" className="form-submit reveal reveal-delay-4">
-            Book a Consultation
+
+          {submitStatus.type === 'error' && (
+            <div className="form-error" style={{ marginTop: '1rem' }}>
+              {submitStatus.message}
+            </div>
+          )}
+
+          {submitStatus.type === 'success' && (
+            <div style={{ color: 'green', marginTop: '1rem' }}>
+              {submitStatus.message}
+            </div>
+          )}
+
+          <button type="submit" className="form-submit reveal reveal-delay-4" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Book a Consultation'}
           </button>
         </form>
       </div>

@@ -42,6 +42,17 @@ body {
   cursor: none;
 }
 
+/* Custom text selection styling */
+::selection {
+  background: var(--color-gold);
+  color: #0a0a0d;
+}
+
+::-moz-selection {
+  background: var(--color-gold);
+  color: #0a0a0d;
+}
+
 /* CUSTOM CURSOR */
 .cursor {
   position: fixed;
@@ -180,7 +191,7 @@ nav {
 .hero-gem svg {
   width: 100%;
   height: 100%;
-  animation: gemFloat 8s ease-in-out infinite;
+  /* static logo: animation removed so the gem remains still */
 }
 
 @keyframes gemFloat {
@@ -921,39 +932,259 @@ section {
 
 /* CLIENTS */
 #clients {
-  background: var(--bg3);
-  padding: 100px 60px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  background: linear-gradient(135deg, #0a0d14 0%, #0e1220 50%, #0a0c12 100%);
+  padding: 5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  font-family: 'Cormorant Garamond', serif;
 }
 
-.clients-label {
-  text-align: center;
-  margin-bottom: 64px;
+#clients::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(184,142,60,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 100%, rgba(184,142,60,0.04) 0%, transparent 60%);
+  pointer-events: none;
 }
 
-.clients-grid {
+#clients::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,142,60,0.5), transparent);
+}
+
+.tb-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 80px;
-  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 2;
 }
 
-.client-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem;
-  font-weight: 300;
-  letter-spacing: 0.3em;
-  color: var(--gold-dim);
+.tb-line {
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, #b8903c);
+}
+
+.tb-line.right {
+  background: linear-gradient(90deg, #b8903c, transparent);
+}
+
+.tb-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.55em;
+  color: #b8903c;
   text-transform: uppercase;
-  transition: color 0.3s;
-  opacity: 0.6;
+  margin: 0;
 }
 
-.client-logo:hover {
-  color: var(--gold);
+.tb-diamond {
+  width: 5px;
+  height: 5px;
+  background: #b8903c;
+  transform: rotate(45deg);
+  opacity: 0.7;
+}
+
+.tb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  align-items: center;
+  justify-items: center;
+  padding: 1.25rem 0.5rem;
+}
+
+.tb-logo-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 32px;
+  border-radius: 60px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(184,142,60,0.18);
+  transition: border-color 0.3s, background 0.3s;
+  cursor: default;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tb-logo-card:hover {
+  border-color: rgba(184,142,60,0.5);
+  background: rgba(184,142,60,0.05);
+}
+
+.tb-logo-image {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tb-logo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.95;
+  transition: opacity 0.3s;
+}
+
+.tb-logo-card:hover .tb-logo-image img {
   opacity: 1;
+}
+
+.tb-logo-card-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  transition: none;
+  cursor: default;
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+}
+
+.tb-logo-card-only:hover {
+  background: transparent;
+}
+
+.tb-logo-image-large {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tb-logo-image-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 1;
+  transition: none;
+}
+
+.tb-logo-card-only:hover .tb-logo-image-large img {
+  opacity: 1;
+}
+
+.tb-logo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #d4b87a;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.tb-logo-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  color: rgba(184,142,60,0.5);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.tb-bottom-accent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.tb-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(184,142,60,0.4);
+}
+
+.tb-count {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: rgba(184,142,60,0.4);
+  text-transform: uppercase;
+}
+
+.phone-input-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 12px;
+}
+
+.country-code-select {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 0;
+}
+
+/* Make native select dropdown match dark theme and be readable */
+.country-code-select {
+  background: linear-gradient(180deg, rgba(10,13,20,0.96), rgba(14,18,28,0.96));
+  color: #f6efdf;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 12px 14px;
+  font-family: var(--font-cormorant, serif);
+  font-size: 14px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.country-code-select option {
+  background: #0a0d14;
+  color: #f6efdf;
+  padding: 8px 12px;
+}
+
+/* Improve visibility on mobile where the native picker may render differently */
+@media (max-width: 768px) {
+  .country-code-select {
+    min-height: 48px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .phone-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tb-track-wrap::before,
+  .tb-track-wrap::after {
+    width: 72px;
+  }
 }
 
 /* ABOUT */
@@ -1475,7 +1706,9 @@ footer {
 .footer-copy {
   font-size: 0.65rem;
   letter-spacing: 0.12em;
-  color: var(--gold-dim);
+  color: var(--gold);
+  font-weight: 500;
+  opacity: 1;
 }
 
 .footer-social {

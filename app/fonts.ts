@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Jost } from 'next/font/google'
+import { Cormorant_Garamond, Jost, Cinzel } from 'next/font/google'
 
 export const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -12,5 +12,12 @@ export const jost = Jost({
   subsets: ['latin'],
   weight: ['200', '300', '400', '500'],
   variable: '--font-jost',
+  display: 'swap',
+})
+
+export const cinzel = Cinzel({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-cinzel',
   display: 'swap',
 })

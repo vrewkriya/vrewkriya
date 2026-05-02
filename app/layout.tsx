@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cormorant, jost } from "./fonts";
+import { cormorant, jost, cinzel } from "./fonts";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import CustomCursor from "@/components/ui/CustomCursor";
@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${jost.variable} ${cinzel.variable}`}>
       <body
         className="bg-bg text-cream font-sans antialiased"
         suppressHydrationWarning

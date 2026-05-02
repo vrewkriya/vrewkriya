@@ -66,7 +66,7 @@ export default function Nav() {
         onClick={(e) => handleScroll(e, 'contact')}
         className={`nav-cta ${activeSection === 'contact' ? 'active' : ''}`}
       >
-        Book a Shoot
+        Let&apos;s Talk
       </a>
     </nav>
   );

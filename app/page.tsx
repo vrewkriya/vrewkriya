@@ -3,7 +3,7 @@ import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
 import Services  from "@/components/sections/Services";
 import Portfolio, { PortfolioItem } from "@/components/sections/Portfolio";
-import Clients, { ClientItem } from "@/components/sections/Clients";
+import Clients from "@/components/sections/Clients";
 import About from "@/components/sections/About";
 import Testimonials, { TestimonialItem } from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
@@ -26,12 +26,7 @@ export default async function Home() {
     return [] as TestimonialItem[];
   });
 
-  const clientsData = await client.fetch<ClientItem[]>(
-    '*[_type == "client"] | order(order asc)'
-  ).catch(e => {
-    console.error('Sanity fetch failed for clients', e.message);
-    return [] as ClientItem[];
-  });
+
 
   return (
     <>
@@ -39,7 +34,7 @@ export default async function Home() {
       <Hero />
       <Services />
       <Portfolio portfolioData={portfolioData} />
-      <Clients clientsData={clientsData} />
+      <Clients />
       <About />
       <Testimonials testimonialsData={testimonialsData} />
       <Contact />
