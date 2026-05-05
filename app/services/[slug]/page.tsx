@@ -4,6 +4,7 @@ import { serviceCategories } from "@/lib/data/services";
 import Footer from "@/components/layout/Footer";
 import ScrollUpOnMount from "@/components/ui/ScrollUpOnMount";
 import "./service-detail.css"; // Import the specific css styles
+import LazyVideo from "./LazyVideo";
 
 export async function generateStaticParams() {
   return serviceCategories.map((service) => ({
@@ -46,13 +47,20 @@ export default async function ServiceDetailPage({
     <>
       <ScrollUpOnMount />
       <div id="page-detail">
-        <div className="detail-hero" id="detailHero">
-          <div
-            className="detail-hero-bg"
-            id="detailHeroBg"
-            style={{ background: bgStyle }}
-          />
-          <div className="detail-hero-content">
+        <div className="detail-hero" id="detailHero" style={{ position: "relative", overflow: "hidden" }}>
+          {service.slug === "creative-production" ? (
+            <>
+              <LazyVideo src="/backdrops/creative-production.mp4" />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.60)", zIndex: 1 }} />
+            </>
+          ) : (
+            <div
+              className="detail-hero-bg"
+              id="detailHeroBg"
+              style={{ background: bgStyle }}
+            />
+          )}
+          <div className="detail-hero-content" style={{ position: "relative", zIndex: 2 }}>
             <div className="detail-breadcrumb">
               <Link href="/#services" className="breadcrumb-back">
                 ← Services
