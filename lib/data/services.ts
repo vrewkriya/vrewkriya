@@ -119,10 +119,10 @@ export const serviceCategories: ServiceCategory[] = [
     shortDesc: "Seamless execution from concept to rollout.",
     points: [
       "Concept to shoot to edit to launch to scale",
-      "Festive campaigns (Ugadi, Diwali, wedding season)",
+      "Festive campaigns (festivals and wedding season)",
       "Collection launches and brand campaigns",
       "Offer based promotional campaigns",
-      "Multi platform rollout (Instagram, Google, WhatsApp)",
+      "Multi platform rollout (Instagram, Google, WhatsApp, Facebook and YouTube)",
     ],
   },
   {

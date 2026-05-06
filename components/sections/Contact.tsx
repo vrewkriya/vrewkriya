@@ -289,7 +289,14 @@ export default function Contact() {
               </button>
 
               {isDropdownOpen && (
-                <div className="custom-select-dropdown">
+                <div
+                  className="custom-select-dropdown"
+                  onWheel={(e: React.WheelEvent<HTMLDivElement>) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    (e.currentTarget as HTMLDivElement).scrollTop += e.deltaY;
+                  }}
+                >
                   {serviceCategories.map((service) => {
                     const isSelected = selectedServices?.includes(service.title);
                     return (

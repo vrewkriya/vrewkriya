@@ -52,26 +52,41 @@ export async function POST(req: NextRequest) {
       console.error("Sanity creation error:", sanityError);
     }
 
-    // 2. Setup email transporter
+    // 2. Setup email transporter (prefer explicit SMTP settings; fallback to Gmail)
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
       console.error("Missing EMAIL_USER or EMAIL_PASS environment variables");
       throw new Error("Email configuration missing on server");
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    let transportOptions: any;
+    if (process.env.SMTP_HOST && process.env.SMTP_PORT) {
+      transportOptions = {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: String(process.env.SMTP_SECURE).toLowerCase() === "true",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      };
+    } else {
+      transportOptions = {
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      };
+    }
+
+    const transporter = nodemailer.createTransport(transportOptions);
 
     // 3. Send owner notification
     try {
       console.log(`Sending owner notification to vrewkriya@gmail.com`);
 
       await transporter.sendMail({
-        from: `"${brand} Inquiry" <${process.env.EMAIL_USER}>`,
+        from: `"${brand} Inquiry" <kiran@vrewkriya.com>`,
         to: "vrewkriya@gmail.com",
         replyTo: email,
         subject: `New inquiry from ${brand} - ${firstName}`,
@@ -107,7 +122,7 @@ export async function POST(req: NextRequest) {
       const autoReplyHtml = getAutoReplyEmailTemplate(firstName, brand, service, message, `${countryCode} ${mobileNumber}`);
 
       await transporter.sendMail({
-        from: `"The Vrewkriya Team" <${process.env.EMAIL_USER}>`,
+        from: `"The Vrewkriya Team" <kiran@vrewkriya.com>`,
         to: email,
         subject: `Thank you for choosing Vrewkriya, ${firstName}!`,
         html: autoReplyHtml,
