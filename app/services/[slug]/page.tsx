@@ -48,9 +48,9 @@ export default async function ServiceDetailPage({
       <ScrollUpOnMount />
       <div id="page-detail">
         <div className="detail-hero" id="detailHero" style={{ position: "relative", overflow: "hidden" }}>
-          {service.slug === "creative-production" ? (
+          {["creative-production", "content-and-brand-strategy", "new-store-launch-support", "google-business-profile-management", "end-to-end-campaign-execution", "post-production-and-delivery", "exhibition-and-outstation-promotion", "consulting-and-growth-strategy", "brand-music-and-songs-in-marketing", "pr-media-and-advertising", "performance-marketing", "social-media-management"].includes(service.slug) ? (
             <>
-              <LazyVideo src="/backdrops/creative-production.mp4" />
+              <LazyVideo src={`/backdrops/${service.slug}.mp4`} />
               <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.60)", zIndex: 1 }} />
             </>
           ) : (

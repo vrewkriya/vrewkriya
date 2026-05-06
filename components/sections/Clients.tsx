@@ -5,6 +5,7 @@ import { client } from "@/sanity/lib/client";
 export interface ClientItem {
   _id: string;
   name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   logo?: any;
   subtitle?: string;
   order?: number;

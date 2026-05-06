@@ -3,7 +3,8 @@ import { clientSchema } from './client'
 import { testimonialSchema } from './testimonial'
 import { portfolioSchema } from './portfolio'
 import { inquirySchema } from './inquiry'
+import { launchEmbeddingSchema } from './launchEmbedding'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [portfolioSchema, testimonialSchema, clientSchema, inquirySchema],
+  types: [portfolioSchema, testimonialSchema, clientSchema, inquirySchema, launchEmbeddingSchema],
 }

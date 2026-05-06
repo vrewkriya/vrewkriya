@@ -166,14 +166,14 @@ export default function Contact() {
           <em>Shine?</em>
         </h2>
         <p className="contact-text reveal reveal-delay-2">
-          Every great elevation begins with a conversation. Tell us about your
-          brand and what you&apos;re building. We&apos;ll tell you how we can
+          Every great elevation begins with a conversation.<br></br> Tell us about your
+          brand and what you&apos;re building.<br></br> We&apos;ll tell you how we can
           make it unforgettable.
         </p>
         <div className="contact-details reveal reveal-delay-3">
           <div className="contact-detail-item">
             <span className="detail-label">Email</span>
-            <span className="detail-value">hello@vrewkriya.com</span>
+            <span className="detail-value">kiran@vrewkriya.com</span>
           </div>
           <div className="contact-detail-item">
             <span className="detail-label">Studio</span>
@@ -192,6 +192,7 @@ export default function Contact() {
             <div className="form-field reveal">
               <label htmlFor="firstName">First Name</label>
               <input
+                suppressHydrationWarning
                 id="firstName"
                 type="text"
                 placeholder="Your Name"
@@ -204,6 +205,7 @@ export default function Contact() {
             <div className="form-field reveal reveal-delay-1">
               <label htmlFor="brandCompany">Brand / Company</label>
               <input
+                suppressHydrationWarning
                 id="brandCompany"
                 type="text"
                 placeholder="Your Brand or Company"
@@ -217,6 +219,7 @@ export default function Contact() {
           <div className="form-field reveal reveal-delay-1">
             <label htmlFor="email">Email Address</label>
             <input
+              suppressHydrationWarning
               id="email"
               type="email"
               placeholder="hello@yourbrand.com"
@@ -229,6 +232,7 @@ export default function Contact() {
             <label htmlFor="mobileNumber">Mobile Number</label>
             <div className="phone-input-row">
               <select
+                suppressHydrationWarning
                 id="countryCode"
                 className={`country-code-select ${errors.countryCode ? "input-error" : ""}`}
                 {...register("countryCode")}
@@ -240,6 +244,7 @@ export default function Contact() {
                 ))}
               </select>
               <input
+                suppressHydrationWarning
                 id="mobileNumber"
                 type="tel"
                 inputMode="numeric"
@@ -272,6 +277,7 @@ export default function Contact() {
             <label htmlFor="service-interested-display" id="service-int-label">Services You Need</label>
             <div className={`custom-select-wrapper ${isDropdownOpen ? 'open' : ''}`}>
               <button
+                suppressHydrationWarning
                 type="button"
                 className={`custom-select-display ${errors.services ? "input-error" : ""}`}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}

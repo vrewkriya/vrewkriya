@@ -67,6 +67,7 @@ export const serviceCategories: ServiceCategory[] = [
     points: [
       "Monthly content calendars",
       "Feed design and visual consistency",
+      "Grid planning and aesthetic curation",
       "Daily and weekly posting strategy",
       "Engagement and growth strategy",
       "Caption and hashtag strategy",
@@ -135,6 +136,35 @@ export const serviceCategories: ServiceCategory[] = [
       "Customer acquisition strategy",
       "Branding and scaling roadmap",
       "Performance analysis and optimization",
+    ],
+  },
+  {
+    title: "Brand Jingle and Songs in Marketing",
+    slug: "brand-music-and-songs-in-marketing",
+    shortDesc: "Strategic use of music and sound to enhance brand identity and audience connection.",
+    points: [
+      "Brand jingle creation and audio identity development",
+      "Custom songs for campaigns and product launches",
+      "Music strategy aligned with brand positioning",
+      "Short-form audio hooks for reels and ads",
+      "Background scores for videos and commercials",
+      "Voiceover direction and sound design",
+    ],
+  },
+  {
+    title: "PR, Media & Advertising",
+    slug: "pr-media-and-advertising",
+    shortDesc: "Strategic brand visibility across press, television, digital media, podcasts, and outdoor platforms.",
+    points: [
+      "Press release creation and media outreach",
+      "Newspaper features and editorial placements",
+      "TV channel coverage and interview coordination",
+      "Podcast features, interviews, and brand storytelling",
+      "Digital PR across online news platforms",
+      "Influencer and media collaborations",
+      "LED billboard and outdoor advertising campaigns",
+      "Ad planning across print, TV, and digital platforms",
+      "Brand storytelling for public and media perception",
     ],
   },
 ];

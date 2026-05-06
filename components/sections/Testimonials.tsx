@@ -44,6 +44,7 @@ export default function Testimonials({
                         src={urlForImage(testi.authorProfilePic)?.url() || ""}
                         alt={testi.name}
                         fill
+                        sizes="48px"
                         style={{ objectFit: 'cover' }}
                       />
                     </div>
