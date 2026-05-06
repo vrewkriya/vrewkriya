@@ -1157,6 +1157,24 @@ section {
   color: var(--cream-dim);
 }
 
+/* VIDEO EMBED — force iframes to fill container */
+.about-embed-modal-content iframe,
+.about-embed-modal-content video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+}
+
+.about-embed-container iframe,
+.about-embed-container video {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+}
+
 /* TESTIMONIALS */
 #testimonials {
   background: var(--bg2);
